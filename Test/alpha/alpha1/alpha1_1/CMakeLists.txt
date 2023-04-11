@@ -1,14 +1,13 @@
-set(PROJECT_NAME beta)
-cmake_minimum_required(VERSION 3.26)
+set(PROJECT_NAME alpha1_1)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
-find_package(alpha)
+find_package(ZLIB)
 
 add_library(${PROJECT_NAME} SHARED)
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
-		beta.cpp
+		src/alpha1_1.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -18,5 +17,6 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		alpha::alpha1_1
+		alpha
+		ZLIB::ZLIB
 )

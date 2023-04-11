@@ -13,6 +13,7 @@ ENV PATH="${TEST_HOME}/.local/bin:${PATH}"
 WORKDIR "${TEST_HOME}"
 
 COPY --chown="${USER}" Conan/ ./
+COPY --chown="${USER}" Test ./
 
 RUN microdnf install --assumeyes \
 	python3.9 \
@@ -38,6 +39,9 @@ USER "${USER}"
 RUN python3 -m pip --quiet install --upgrade pip cmake conan numpy virtualenv --user --no-warn-script-location --no-cache-dir \
 	&& conan config install profile --target-folder profiles \
 	&& mv "${HOME}/.conan2/profiles/profile" "${HOME}/.conan2/profiles/default" \
-	&& conan install -verror . --build=missing
+	&& conan install -verror . --build=missing \
+	&& conan editable add alpha/ \
+	&& conan build -verror alpha/ --build="missing" \
+	&& rm -rf *.sh conanfile* profile
 
 CMD [ "bash" ]

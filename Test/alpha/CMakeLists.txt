@@ -1,9 +1,15 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.26)
 
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_STANDARD 17)
-set(PROJECT_NAME Alpha)
 
-project(${PROJECT_NAME} LANGUAGES CXX)
+add_library(alpha INTERFACE)
 
-add_subdirectory(alpha)
+target_include_directories(alpha
+	INTERFACE
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+add_subdirectory(alpha1/alpha1_1)
+add_subdirectory(alpha1/alpha1_2)
+add_subdirectory(alpha2)
