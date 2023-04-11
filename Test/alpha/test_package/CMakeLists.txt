@@ -1,22 +1,17 @@
-set(PROJECT_NAME beta)
+set(PROJECT_NAME example)
 cmake_minimum_required(VERSION 3.15)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 find_package(alpha)
 
-add_library(${PROJECT_NAME} SHARED)
+add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
-		beta.cpp
-)
-
-target_include_directories(${PROJECT_NAME}
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/include
+		example.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		alpha::alpha1_1
+		alpha::alpha1_2
 )

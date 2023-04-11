@@ -1,7 +1,7 @@
 from collections import namedtuple
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
-from conan.tools.files import copy, collect_libs
+from conan.tools.files import copy
 
 required_conan_version = ">=2.0.0"
 
@@ -37,6 +37,8 @@ class Pkg(ConanFile):
 		self.requires("zlib/1.2.13")
 
 	def configure(self):
+		if self.options.shared:
+			self.options.rm_safe("fPIC")
 		self.options["zlib/*"].shared=True
 
 	def layout(self):
@@ -66,16 +68,8 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.set_property("cmake_file_name", self.name)
-		self.cpp_info.set_property("cmake_target_name", f"{self.name}::{self.name}")
-
 		for compname, comp in self._alpha_component_tree.items():
-			conan_component = f"{self.name}_{compname.lower()}"
-			requires = [f"{self.name}_{dependency.lower()}" for dependency in comp.dependencies] + comp.external_dependencies
-			self.cpp_info.components[conan_component].set_property("cmake_target_name", f"{self.name}::{compname}")
-			self.cpp_info.components[conan_component].set_property("cmake_file_name", compname)
-			self.cpp_info.components[conan_component].names["cmake_find_package"] = compname
-			self.cpp_info.components[conan_component].names["cmake_find_package_multi"] = compname
+			requires = comp.dependencies + comp.external_dependencies
 			if comp.is_lib:
-				self.cpp_info.components[conan_component].libs = [f"{compname}"]
-			self.cpp_info.components[conan_component].requires = requires
+				self.cpp_info.components[compname].libs = [f"{compname}"]
+			self.cpp_info.components[compname].requires = requires

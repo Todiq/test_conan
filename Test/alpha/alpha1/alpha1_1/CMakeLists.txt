@@ -14,7 +14,7 @@ target_include_directories(${PROJECT_NAME}
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/include/alpha/alpha1_1/alpha1_1.hpp")
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
 		alpha
