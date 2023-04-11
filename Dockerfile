@@ -12,8 +12,7 @@ ENV PATH="${TEST_HOME}/.local/bin:${PATH}"
 
 WORKDIR "${TEST_HOME}"
 
-COPY --chown="${USER}" Conan/ ./
-COPY --chown="${USER}" Test ./
+COPY --chown="${USER}" Conan/ Test ./
 
 RUN microdnf install --assumeyes \
 	python3.9 \
