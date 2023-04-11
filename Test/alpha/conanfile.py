@@ -44,8 +44,11 @@ class Pkg(ConanFile):
 		self.folders.build = f"build/{self.settings.build_type}"
 		self.folders.generators = f"{self.folders.build}/generators"
 
-		self.cpp.source.includedirs = ["."]
-		self.cpp.build.libdirs = ["."]
+		for compname, comp in self._alpha_component_tree.items():
+			conan_component = f"{self.name}_{compname.lower()}"
+			self.cpp.source.components[conan_component].includedirs = ["."]
+			if comp.is_lib:
+				self.cpp.build.components[conan_component].libdirs = ["."]
 
 	def generate(self):
 		ct = CMakeToolchain(self)
