@@ -16,3 +16,7 @@ add_subdirectory(alpha1/alpha1_2)
 add_subdirectory(alpha2)
 
 install(TARGETS alpha alpha1_1 alpha1_2 alpha2)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/alpha
+		TYPE INCLUDE
+)

@@ -20,3 +20,7 @@ target_link_libraries(${PROJECT_NAME}
 		alpha
 		alpha1_1
 )
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/alpha
+		TYPE INCLUDE
+)

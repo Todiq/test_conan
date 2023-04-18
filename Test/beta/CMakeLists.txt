@@ -4,7 +4,7 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 
 find_package(alpha)
 
-add_library(${PROJECT_NAME} SHARED)
+add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
@@ -18,5 +18,15 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		alpha::alpha1_1
+		alpha::alpha
+)
+
+add_custom_target(test ALL
+	COMMENT "Running beta"
+	VERBATIM
+	COMMAND $<TARGET_FILE:${PROJECT_NAME}>
+)
+
+add_dependencies(test
+	beta
 )
