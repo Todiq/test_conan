@@ -7,3 +7,4 @@ def run(cmd):
 
 
 run("conan create Test/alpha --build=missing")
+run("conan create Test/beta --build=missing")

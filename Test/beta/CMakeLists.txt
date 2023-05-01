@@ -21,12 +21,4 @@ target_link_libraries(${PROJECT_NAME}
 		alpha::alpha
 )
 
-add_custom_target(test ALL
-	COMMENT "Running beta"
-	VERBATIM
-	COMMAND $<TARGET_FILE:${PROJECT_NAME}>
-)
-
-add_dependencies(test
-	beta
-)
+install(TARGETS ${PROJECT_NAME})
