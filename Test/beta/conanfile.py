@@ -11,19 +11,6 @@ class Pkg(ConanFile):
 
 	# Binary configuration
 	settings = "os", "compiler", "build_type", "arch"
-	options = {
-		"shared": [True, False],
-		"fPIC": [True, False],
-	}
-	default_options = {
-		"shared": True,
-		"fPIC": False,
-	}
-
-	def export_sources(self):
-		copy(self, "*.c*", src=self.recipe_folder, dst=self.export_sources_folder)
-		copy(self, "*.h*", src=self.recipe_folder, dst=self.export_sources_folder)
-		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
 	def requirements(self):
 		self.requires("alpha/1.0")
@@ -36,9 +23,6 @@ class Pkg(ConanFile):
 		self.folders.build = f"build/{self.settings.build_type}"
 		self.folders.generators = f"{self.folders.build}/generators"
 
-		self.cpp.source.includedirs = ["."]
-		self.cpp.build.libdirs = ["."]
-
 	def generate(self):
 		ct = CMakeToolchain(self)
 		ct.generate()
@@ -49,7 +33,3 @@ class Pkg(ConanFile):
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()
-
-	def package(self):
-		cmake = CMake(self)
-		cmake.install()

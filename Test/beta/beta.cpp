@@ -1,5 +1,4 @@
 #include <alpha/alpha1_2/alpha1_2.hpp>
-#include <beta/beta.hpp>
 
 int	main()
 {
