@@ -20,14 +20,6 @@ class Pkg(ConanFile):
 		"fPIC": False,
 	}
 
-	_AlphaComponent = namedtuple("_AlphaComponent", ("dependencies", "external_dependencies", "is_lib"))
-	_alpha_component_tree = {
-		"alpha": _AlphaComponent([], [], False),
-		"alpha1_1": _AlphaComponent(["alpha"], ["zlib::zlib"], True),
-		"alpha1_2": _AlphaComponent(["alpha1_1"], [], True),
-		"alpha2": _AlphaComponent([], [], True)
-	}
-
 	def export_sources(self):
 		copy(self, "*.c*", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "*.h*", src=self.recipe_folder, dst=self.export_sources_folder)
@@ -46,12 +38,18 @@ class Pkg(ConanFile):
 		self.folders.build = f"build/{self.settings.build_type}"
 		self.folders.generators = f"{self.folders.build}/generators"
 
-		for compname, comp in self._alpha_component_tree.items():
-			conan_component = f"{self.name}_{compname.lower()}"
-			self.cpp.source.components[conan_component].includedirs = ["."]
-			if comp.is_lib:
-				self.cpp.build.components[conan_component].libdirs = ["."]
+		self.cpp.source.components["alpha_alpha1_1"].includedirs = ["alpha1/alpha1_1/include"]
+		self.cpp.source.components["alpha_alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
+		self.cpp.source.components["alpha_alpha2"].includedirs = ["alpha2/include"]
 
+		self.cpp.build.components["alpha_alpha1_1"].libdirs = [f"alpha1/alpha1_1/{self.settings.build_type}"]
+		self.cpp.build.components["alpha_alpha1_2"].libdirs = [f"alpha1/alpha1_2/{self.settings.build_type}"]
+		self.cpp.build.components["alpha_alpha2"].libdirs = [f"alpha2/{self.settings.build_type}"]
+		
+		self.cpp.build.components["alpha_alpha1_1"].bindirs = [f"alpha1/alpha1_1/{self.settings.build_type}"]
+		self.cpp.build.components["alpha_alpha1_2"].bindirs = [f"alpha1/alpha1_2/{self.settings.build_type}"]
+		self.cpp.build.components["alpha_alpha2"].bindirs = [f"alpha2/{self.settings.build_type}"]
+	
 	def generate(self):
 		ct = CMakeToolchain(self)
 		ct.generate()
@@ -68,8 +66,6 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		for compname, comp in self._alpha_component_tree.items():
-			requires = comp.dependencies + comp.external_dependencies
-			if comp.is_lib:
-				self.cpp_info.components[compname].libs = [f"{compname}"]
-			self.cpp_info.components[compname].requires = requires
+		self.cpp_info.components["alpha_alpha1_1"].libs = ["alpha1_1"]
+		self.cpp_info.components["alpha_alpha1_2"].libs = ["alpha1_2"]
+		self.cpp_info.components["alpha_alpha2"].libs = ["alpha2"]

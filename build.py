@@ -6,4 +6,12 @@ def run(cmd):
         raise Exception(f"Failed CMD: {cmd}")
 
 
-run("conan create Test/alpha --build=missing")
+# normal creation works
+#run("conan create Test/alpha --build=missing")
+#run("conan create Test/beta --build=missing")
+
+# rmove things and define editables
+#run("conan remove * -c")
+run("conan editable add Test/alpha")
+run("conan build Test/alpha --build=missing")
+run("conan build Test/beta")
