@@ -42,13 +42,14 @@ class Pkg(ConanFile):
 		self.cpp.source.components["alpha_alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
 		self.cpp.source.components["alpha_alpha2"].includedirs = ["alpha2/include"]
 
-		self.cpp.build.components["alpha_alpha1_1"].libdirs = [f"alpha1/alpha1_1/{self.settings.build_type}"]
-		self.cpp.build.components["alpha_alpha1_2"].libdirs = [f"alpha1/alpha1_2/{self.settings.build_type}"]
-		self.cpp.build.components["alpha_alpha2"].libdirs = [f"alpha2/{self.settings.build_type}"]
+		bt_folder = f"/{self.settings.build_type}" if self.settings.compiler == "msvc" else ""
+		self.cpp.build.components["alpha_alpha1_1"].libdirs = [f"alpha1/alpha1_1{bt_folder}"]
+		self.cpp.build.components["alpha_alpha1_2"].libdirs = [f"alpha1/alpha1_2{bt_folder}"]
+		self.cpp.build.components["alpha_alpha2"].libdirs = [f"alpha2{bt_folder}"]
 		
-		self.cpp.build.components["alpha_alpha1_1"].bindirs = [f"alpha1/alpha1_1/{self.settings.build_type}"]
-		self.cpp.build.components["alpha_alpha1_2"].bindirs = [f"alpha1/alpha1_2/{self.settings.build_type}"]
-		self.cpp.build.components["alpha_alpha2"].bindirs = [f"alpha2/{self.settings.build_type}"]
+		self.cpp.build.components["alpha_alpha1_1"].bindirs = [f"alpha1/alpha1_1{bt_folder}"]
+		self.cpp.build.components["alpha_alpha1_2"].bindirs = [f"alpha1/alpha1_2{bt_folder}"]
+		self.cpp.build.components["alpha_alpha2"].bindirs = [f"alpha2{bt_folder}"]
 	
 	def generate(self):
 		ct = CMakeToolchain(self)
