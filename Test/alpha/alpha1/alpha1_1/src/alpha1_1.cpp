@@ -1,5 +1,5 @@
-#include <alpha/alpha1_1/alpha1_1.hpp>
-#include <alpha/alpha.hpp>
+#include <Alpha/alpha1_1/alpha1_1.hpp>
+#include <Alpha/alpha.hpp>
 #include <cstring>
 #include <zlib.h>
 

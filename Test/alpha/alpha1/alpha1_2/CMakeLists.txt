@@ -1,5 +1,4 @@
-set(PROJECT_NAME alpha1_2)
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(alpha1_2 LANGUAGES CXX)
 
 add_library(${PROJECT_NAME} SHARED)
 
@@ -17,10 +16,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${CMAKE_CURRENT_
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		alpha
+		myalpha
 		alpha1_1
 )
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/alpha
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/Alpha
 		TYPE INCLUDE
 )

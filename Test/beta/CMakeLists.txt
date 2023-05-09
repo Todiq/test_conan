@@ -13,7 +13,7 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		alpha::alpha
+		alpha::alpha1_2
 )
 
 install(TARGETS ${PROJECT_NAME})

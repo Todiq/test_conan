@@ -16,8 +16,16 @@ class Pkg(ConanFile):
 		"fPIC": [True, False],
 	}
 	default_options = {
-		"shared": True,
-		"fPIC": False,
+		"shared": False,
+		"fPIC": True,
+	}
+
+	_ParsingComponent = namedtuple("_ParsingComponent", ("path", "contains_headers", "header_only"))
+	_parsing_components = {
+		"myalpha": _ParsingComponent(".", True, True),
+		"alpha1_1": _ParsingComponent("alpha1/alpha1_1", True, False),
+		"alpha1_2": _ParsingComponent("alpha1/alpha1_2", True, False),
+		"alpha2": _ParsingComponent("alpha2", True, False),
 	}
 
 	def export_sources(self):
@@ -37,20 +45,18 @@ class Pkg(ConanFile):
 		self.folders.source = "."
 		self.folders.build = f"build/{self.settings.build_type}"
 		self.folders.generators = f"{self.folders.build}/generators"
-
-		self.cpp.source.components["alpha_alpha1_1"].includedirs = ["alpha1/alpha1_1/include"]
-		self.cpp.source.components["alpha_alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
-		self.cpp.source.components["alpha_alpha2"].includedirs = ["alpha2/include"]
-
 		bt_folder = f"/{self.settings.build_type}" if self.settings.compiler == "msvc" else ""
-		self.cpp.build.components["alpha_alpha1_1"].libdirs = [f"alpha1/alpha1_1{bt_folder}"]
-		self.cpp.build.components["alpha_alpha1_2"].libdirs = [f"alpha1/alpha1_2{bt_folder}"]
-		self.cpp.build.components["alpha_alpha2"].libdirs = [f"alpha2{bt_folder}"]
-		
-		self.cpp.build.components["alpha_alpha1_1"].bindirs = [f"alpha1/alpha1_1{bt_folder}"]
-		self.cpp.build.components["alpha_alpha1_2"].bindirs = [f"alpha1/alpha1_2{bt_folder}"]
-		self.cpp.build.components["alpha_alpha2"].bindirs = [f"alpha2{bt_folder}"]
-	
+
+		for compname, comp in self._parsing_components.items():
+			if comp.header_only is False:
+				self.cpp.build.components[compname].libdirs = [f"{comp.path}{bt_folder}"]
+				self.cpp.build.components[compname].bindirs = [f"{comp.path}{bt_folder}"]
+			else:
+				self.cpp.build.components[compname].libdirs = [f""]
+				self.cpp.build.components[compname].bindirs = [f""]
+			if comp.contains_headers is True:
+				self.cpp.source.components[compname].includedirs = [f"{comp.path}/include"]
+
 	def generate(self):
 		ct = CMakeToolchain(self)
 		ct.generate()
@@ -67,6 +73,9 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.components["alpha_alpha1_1"].libs = ["alpha1_1"]
-		self.cpp_info.components["alpha_alpha1_2"].libs = ["alpha1_2"]
-		self.cpp_info.components["alpha_alpha2"].libs = ["alpha2"]
+		for compname, comp in self._parsing_components.items():
+			if comp.header_only is True:
+				self.cpp_info.components[compname].bindirs = []
+				self.cpp_info.components[compname].libdirs = []
+			else:
+				self.cpp_info.components[compname].libs = [f"{compname}"]

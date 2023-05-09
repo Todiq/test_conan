@@ -1,5 +1,4 @@
-set(PROJECT_NAME alpha2)
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(alpha2 LANGUAGES CXX)
 
 add_library(${PROJECT_NAME} SHARED)
 
@@ -12,7 +11,6 @@ target_include_directories(${PROJECT_NAME}
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
