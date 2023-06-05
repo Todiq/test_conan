@@ -1,0 +1,21 @@
+project(example LANGUAGES CXX)
+
+add_library(${PROJECT_NAME})
+
+target_sources(${PROJECT_NAME}
+	PRIVATE
+		example.cpp
+)
+
+target_include_directories(${PROJECT_NAME}
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+include(GNUInstallDirs)
+
+install(TARGETS ${PROJECT_NAME}
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
+)
