@@ -11,6 +11,8 @@ target_include_directories(${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+include(GNUInstallDirs)
+
 add_subdirectory(alpha1/alpha1_1)
 add_subdirectory(alpha1/alpha1_2)
 add_subdirectory(alpha2)
