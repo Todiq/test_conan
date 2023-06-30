@@ -1,14 +1,14 @@
-set(PROJECT_NAME beta)
+set(PROJECT_NAME test)
 cmake_minimum_required(VERSION 3.15)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 find_package(alpha)
 
-add_executable(${PROJECT_NAME})
+add_library(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
-		beta.cpp
+		src/test.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -22,8 +22,8 @@ class Pkg(ConanFile):
 	}
 
 	def export_sources(self):
-		copy(self, "*.c*", src=self.recipe_folder, dst=self.export_sources_folder)
-		copy(self, "*.h*", src=self.recipe_folder, dst=self.export_sources_folder)
+		copy(self, "*.cpp", src=self.recipe_folder, dst=self.export_sources_folder)
+		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
 	def requirements(self):
@@ -39,7 +39,7 @@ class Pkg(ConanFile):
 		self.options["zlib/*"].shared=True
 
 	def layout(self):
-		cmake_layout(self, generator="Ninja")
+		cmake_layout(self)
 		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
 
 		self.cpp.source.components["headers"].includedirs = ["include"]
@@ -49,6 +49,8 @@ class Pkg(ConanFile):
 		self.cpp.build.components["alpha1_2"].libdirs = [os.path.join(bt, "alpha1/alpha1_2")]
 		self.cpp.source.components["alpha2"].includedirs = ["alpha2/include"]
 		self.cpp.build.components["alpha2"].libdirs = [os.path.join(bt, "alpha2")]
+		self.cpp.build.components["alpha2"].builddirs = [os.path.join(bt, "alpha2")]
+		self.cpp.package.components["alpha2"].resdirs = ["output"]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
@@ -66,6 +68,7 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
+		self.cpp_info.resdirs = ["share"]
 		self.cpp_info.components["headers"].set_property("cmake_target_name", "Alpha::headers")
 		self.cpp_info.components["alpha1_1"].libs = ["alpha1_1"]
 		self.cpp_info.components["alpha1_1"].set_property("cmake_target_name", "Alpha::alpha1_1")
