@@ -47,7 +47,7 @@ class Pkg(ConanFile):
 		self.folders.generators = f"{self.folders.build}/generators"
 		bt_folder = f"/{self.settings.build_type}" if self.settings.compiler == "msvc" else ""
 
-		for compname, comp in self._parsing_components.items():
+		for compname, comp in self._alpha_components.items():
 			if comp.header_only is False:
 				self.cpp.build.components[compname].libdirs = [f"{comp.path}{bt_folder}"]
 				self.cpp.build.components[compname].bindirs = [f"{comp.path}{bt_folder}"]
