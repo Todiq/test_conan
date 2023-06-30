@@ -2,6 +2,7 @@ from collections import namedtuple
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy
+import os
 
 required_conan_version = ">=2.0.0"
 
@@ -16,16 +17,8 @@ class Pkg(ConanFile):
 		"fPIC": [True, False],
 	}
 	default_options = {
-		"shared": False,
-		"fPIC": True,
-	}
-
-	_AlphaComponent = namedtuple("_AlphaComponent", ("path", "contains_headers", "header_only"))
-	_alpha_components = {
-		"myalpha": _AlphaComponent(".", True, True),
-		"alpha1_1": _AlphaComponent("alpha1/alpha1_1", True, False),
-		"alpha1_2": _AlphaComponent("alpha1/alpha1_2", True, False),
-		"alpha2": _AlphaComponent("alpha2", True, False),
+		"shared": True,
+		"fPIC": False,
 	}
 
 	def export_sources(self):
@@ -36,32 +29,32 @@ class Pkg(ConanFile):
 	def requirements(self):
 		self.requires("zlib/1.2.13")
 
+	def config_options(self):
+		if self.settings.os == "Windows":
+			del self.options.fPIC
+
 	def configure(self):
 		if self.options.shared:
 			self.options.rm_safe("fPIC")
 		self.options["zlib/*"].shared=True
 
 	def layout(self):
-		self.folders.source = "."
-		self.folders.build = f"build/{self.settings.build_type}"
-		self.folders.generators = f"{self.folders.build}/generators"
-		bt_folder = f"/{self.settings.build_type}" if self.settings.compiler == "msvc" else ""
+		cmake_layout(self, generator="Ninja")
+		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
 
-		for compname, comp in self._alpha_components.items():
-			if comp.header_only is False:
-				self.cpp.build.components[compname].libdirs = [f"{comp.path}{bt_folder}"]
-				self.cpp.build.components[compname].bindirs = [f"{comp.path}{bt_folder}"]
-			else:
-				self.cpp.build.components[compname].libdirs = [f""]
-				self.cpp.build.components[compname].bindirs = [f""]
-			if comp.contains_headers is True:
-				self.cpp.source.components[compname].includedirs = [f"{comp.path}/include"]
+		self.cpp.source.components["headers"].includedirs = ["include"]
+		self.cpp.source.components["alpha1_1"].includedirs = ["alpha1/alpha1_1/include"]
+		self.cpp.build.components["alpha1_1"].libdirs = [os.path.join(bt, "alpha1/alpha1_1")]
+		self.cpp.source.components["alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
+		self.cpp.build.components["alpha1_2"].libdirs = [os.path.join(bt, "alpha1/alpha1_2")]
+		self.cpp.source.components["alpha2"].includedirs = ["alpha2/include"]
+		self.cpp.build.components["alpha2"].libdirs = [os.path.join(bt, "alpha2")]
 
 	def generate(self):
-		ct = CMakeToolchain(self)
-		ct.generate()
-		cd = CMakeDeps(self)
-		cd.generate()
+		tc = CMakeToolchain(self)
+		tc.generate()
+		d = CMakeDeps(self)
+		d.generate()
 
 	def build(self):
 		cmake = CMake(self)
@@ -73,9 +66,10 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		for compname, comp in self._alpha_components.items():
-			if comp.header_only is True:
-				self.cpp_info.components[compname].bindirs = []
-				self.cpp_info.components[compname].libdirs = []
-			else:
-				self.cpp_info.components[compname].libs = [f"{compname}"]
+		self.cpp_info.components["headers"].set_property("cmake_target_name", "Alpha::headers")
+		self.cpp_info.components["alpha1_1"].libs = ["alpha1_1"]
+		self.cpp_info.components["alpha1_1"].set_property("cmake_target_name", "Alpha::alpha1_1")
+		self.cpp_info.components["alpha1_2"].libs = ["alpha1_2"]
+		self.cpp_info.components["alpha1_2"].set_property("cmake_target_name", "Alpha::alpha1_2")
+		self.cpp_info.components["alpha2"].libs = ["alpha2"]
+		self.cpp_info.components["alpha2"].set_property("cmake_target_name", "Alpha::alpha2")

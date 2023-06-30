@@ -19,15 +19,13 @@ class Pkg(ConanFile):
 		self.options["alpha/*"].shared=True
 
 	def layout(self):
-		self.folders.source = "."
-		self.folders.build = f"build/{self.settings.build_type}"
-		self.folders.generators = f"{self.folders.build}/generators"
+		cmake_layout(self, generator="Ninja")
 
 	def generate(self):
-		ct = CMakeToolchain(self)
-		ct.generate()
-		cd = CMakeDeps(self)
-		cd.generate()
+		tc = CMakeToolchain(self)
+		tc.generate()
+		d = CMakeDeps(self)
+		d.generate()
 
 	def build(self):
 		cmake = CMake(self)
