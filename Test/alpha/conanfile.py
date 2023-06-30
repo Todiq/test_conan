@@ -20,12 +20,12 @@ class Pkg(ConanFile):
 		"fPIC": True,
 	}
 
-	_ParsingComponent = namedtuple("_ParsingComponent", ("path", "contains_headers", "header_only"))
-	_parsing_components = {
-		"myalpha": _ParsingComponent(".", True, True),
-		"alpha1_1": _ParsingComponent("alpha1/alpha1_1", True, False),
-		"alpha1_2": _ParsingComponent("alpha1/alpha1_2", True, False),
-		"alpha2": _ParsingComponent("alpha2", True, False),
+	_AlphaComponent = namedtuple("_AlphaComponent", ("path", "contains_headers", "header_only"))
+	_alpha_components = {
+		"myalpha": _AlphaComponent(".", True, True),
+		"alpha1_1": _AlphaComponent("alpha1/alpha1_1", True, False),
+		"alpha1_2": _AlphaComponent("alpha1/alpha1_2", True, False),
+		"alpha2": _AlphaComponent("alpha2", True, False),
 	}
 
 	def export_sources(self):
@@ -73,7 +73,7 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		for compname, comp in self._parsing_components.items():
+		for compname, comp in self._alpha_components.items():
 			if comp.header_only is True:
 				self.cpp_info.components[compname].bindirs = []
 				self.cpp_info.components[compname].libdirs = []

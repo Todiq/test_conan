@@ -1,4 +1,4 @@
-#include "alpha1_2.hpp"
+#include <Alpha/alpha1_2/alpha1_2.hpp>
 
 int	main()
 {
