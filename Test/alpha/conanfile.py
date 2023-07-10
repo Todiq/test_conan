@@ -45,12 +45,13 @@ class Pkg(ConanFile):
 		self.cpp.source.components["headers"].includedirs = ["include"]
 		self.cpp.source.components["alpha1_1"].includedirs = ["alpha1/alpha1_1/include"]
 		self.cpp.build.components["alpha1_1"].libdirs = [os.path.join("alpha1/alpha1_1", bt)]
+		self.cpp.build.components["alpha1_1"].bindirs = [os.path.join("alpha1/alpha1_1", bt)]
 		self.cpp.source.components["alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
 		self.cpp.build.components["alpha1_2"].libdirs = [os.path.join("alpha1/alpha1_2", bt)]
+		self.cpp.build.components["alpha1_2"].bindirs = [os.path.join("alpha1/alpha1_2", bt)]
 		self.cpp.source.components["alpha2"].includedirs = ["alpha2/include"]
 		self.cpp.build.components["alpha2"].libdirs = [os.path.join("alpha2", bt)]
-		self.cpp.build.components["alpha2"].builddirs = [os.path.join("alpha2", bt)]
-		self.cpp.package.components["alpha2"].resdirs = ["output"]
+		self.cpp.build.components["alpha2"].bindirs = [os.path.join("alpha2", bt)]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
