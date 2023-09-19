@@ -21,10 +21,8 @@ class Pkg(ConanFile):
 
 	def export_sources(self):
 		copy(self, "*.cpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
-		copy(self, "*.h", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
-		copy(self, "*.inl", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 
 	def requirements(self):
 		self.requires("alpha/1.0")
@@ -40,10 +38,6 @@ class Pkg(ConanFile):
 
 	def layout(self):
 		cmake_layout(self)
-		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
-
-		self.cpp.source.components["test"].includedirs = ["include"]
-		self.cpp.build.components["test"].libdirs = [bt]
 
 	def generate(self):
 		ct = CMakeToolchain(self)
@@ -59,10 +53,3 @@ class Pkg(ConanFile):
 	def package(self):
 		cmake = CMake(self)
 		cmake.install()
-
-	def package_info(self):
-		self.cpp_info.components["test"].libs = [f"test"]
-		self.cpp_info.components["test"].set_property("cmake_target_name", f"Beta::test")
-		self.cpp_info.components["test"].requires = [
-			"alpha::alpha"
-		]
