@@ -31,7 +31,7 @@ class Pkg(ConanFile):
 
 	def config_options(self):
 		if self.settings.os == "Windows":
-			del self.options.fPIC
+			self.options.rm_safe("fPIC")
 
 	def configure(self):
 		if self.options.shared:
@@ -39,14 +39,14 @@ class Pkg(ConanFile):
 		self.options["alpha/*"].shared=True
 
 	def layout(self):
-		cmake_layout(self, generator="Ninja")
+		cmake_layout(self)
 		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
 
 		self.cpp.source.components["test"].includedirs = ["include"]
 		self.cpp.build.components["test"].libdirs = [bt]
 
 	def generate(self):
-		ct = CMakeToolchain(self, generator="Ninja")
+		ct = CMakeToolchain(self)
 		ct.generate()
 		cd = CMakeDeps(self)
 		cd.generate()
