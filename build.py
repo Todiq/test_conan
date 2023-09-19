@@ -12,6 +12,7 @@ def run(cmd):
 
 # rmove things and define editables
 #run("conan remove * -c")
-run("conan editable add Test/alpha")
-run("conan build Test/alpha --build=missing")
-run("conan build Test/beta")
+#run("conan editable add Test/alpha")
+run('conan build Test/alpha --build=missing --settings "&:build_type=Debug"')
+run('conan test Test/alpha/test_package --settings "&:build_type=Debug" alpha/1.0')
+#run("conan build Test/beta")
