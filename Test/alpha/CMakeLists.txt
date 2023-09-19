@@ -15,6 +15,7 @@ include(GNUInstallDirs)
 
 add_subdirectory(alpha1)
 add_subdirectory(alpha2)
+add_subdirectory(alpha_exe)
 
 install(TARGETS ${PROJECT_NAME} alpha1 alpha2)
 # install(TARGETS ${PROJECT_NAME} alpha1)

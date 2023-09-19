@@ -13,5 +13,5 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		Alpha::alpha1_2
+		Alpha::alpha2
 )

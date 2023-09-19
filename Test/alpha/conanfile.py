@@ -47,6 +47,7 @@ class Pkg(ConanFile):
 		self.cpp.build.components["alpha1"].libdirs = [os.path.join("alpha1", bt)]
 		self.cpp.source.components["alpha2"].includedirs = ["alpha2/include"]
 		self.cpp.build.components["alpha2"].libdirs = [os.path.join("alpha2", bt)]
+		self.cpp.build.components["alpha_exe"].bindirs = [os.path.join("alpha_exe", bt)]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
