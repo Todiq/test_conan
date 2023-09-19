@@ -1,10 +1,12 @@
-project(alpha1_2 LANGUAGES CXX)
+project(alpha1 LANGUAGES CXX)
+
+find_package(ZLIB)
 
 add_library(${PROJECT_NAME} SHARED)
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
-		src/alpha1_2.cpp
+		src/alpha1.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -12,12 +14,10 @@ target_include_directories(${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/include/alpha/alpha1_2/alpha1_2.hpp")
-
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
 		headers
-		alpha1_1
+		ZLIB::ZLIB
 )
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/Alpha

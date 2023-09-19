@@ -43,15 +43,10 @@ class Pkg(ConanFile):
 		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
 
 		self.cpp.source.components["headers"].includedirs = ["include"]
-		self.cpp.source.components["alpha1_1"].includedirs = ["alpha1/alpha1_1/include"]
-		self.cpp.build.components["alpha1_1"].libdirs = [os.path.join("alpha1/alpha1_1", bt)]
-		self.cpp.build.components["alpha1_1"].bindirs = [os.path.join("alpha1/alpha1_1", bt)]
-		self.cpp.source.components["alpha1_2"].includedirs = ["alpha1/alpha1_2/include"]
-		self.cpp.build.components["alpha1_2"].libdirs = [os.path.join("alpha1/alpha1_2", bt)]
-		self.cpp.build.components["alpha1_2"].bindirs = [os.path.join("alpha1/alpha1_2", bt)]
+		self.cpp.source.components["alpha1"].includedirs = ["alpha1/include"]
+		self.cpp.build.components["alpha1"].libdirs = [os.path.join("alpha1", bt)]
 		self.cpp.source.components["alpha2"].includedirs = ["alpha2/include"]
 		self.cpp.build.components["alpha2"].libdirs = [os.path.join("alpha2", bt)]
-		self.cpp.build.components["alpha2"].bindirs = [os.path.join("alpha2", bt)]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
@@ -71,9 +66,7 @@ class Pkg(ConanFile):
 	def package_info(self):
 		self.cpp_info.resdirs = ["share"]
 		self.cpp_info.components["headers"].set_property("cmake_target_name", "Alpha::headers")
-		self.cpp_info.components["alpha1_1"].libs = ["alpha1_1"]
-		self.cpp_info.components["alpha1_1"].set_property("cmake_target_name", "Alpha::alpha1_1")
-		self.cpp_info.components["alpha1_2"].libs = ["alpha1_2"]
-		self.cpp_info.components["alpha1_2"].set_property("cmake_target_name", "Alpha::alpha1_2")
+		self.cpp_info.components["alpha1"].libs = ["alpha1"]
+		self.cpp_info.components["alpha1"].set_property("cmake_target_name", "Alpha::alpha1")
 		self.cpp_info.components["alpha2"].libs = ["alpha2"]
 		self.cpp_info.components["alpha2"].set_property("cmake_target_name", "Alpha::alpha2")

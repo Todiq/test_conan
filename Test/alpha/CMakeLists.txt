@@ -13,11 +13,11 @@ target_include_directories(${PROJECT_NAME}
 
 include(GNUInstallDirs)
 
-add_subdirectory(alpha1/alpha1_1)
-add_subdirectory(alpha1/alpha1_2)
+add_subdirectory(alpha1)
 add_subdirectory(alpha2)
 
-install(TARGETS ${PROJECT_NAME} alpha1_1 alpha1_2 alpha2)
+install(TARGETS ${PROJECT_NAME} alpha1 alpha2)
+# install(TARGETS ${PROJECT_NAME} alpha1)
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/Alpha
 		TYPE INCLUDE

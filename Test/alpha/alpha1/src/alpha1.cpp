@@ -1,9 +1,9 @@
-#include <Alpha/alpha1_1/alpha1_1.hpp>
+#include <Alpha/alpha1/alpha1.hpp>
 #include <Alpha/alpha.hpp>
 #include <cstring>
 #include <zlib.h>
 
-void	alpha1_1()
+void	alpha1()
 {
 	const unsigned char pData[] = { "Hello" };
 	unsigned long nDataSize = 100;
@@ -30,5 +30,5 @@ void	alpha1_1()
 		delete [] pUncompressedData;
 	}
 	delete [] pCompressedData;
-	std::cout << "alpha1_1" << std::endl;
+	std::cout << "alpha1" << std::endl;
 }
