@@ -24,6 +24,9 @@ class Pkg(ConanFile):
 		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 
+	def build_requirements(self):
+		self.tool_requires("alpha/1.0")
+
 	def requirements(self):
 		self.requires("alpha/1.0")
 
@@ -40,6 +43,8 @@ class Pkg(ConanFile):
 		cmake_layout(self)
 
 	def generate(self):
+		alpha_exe = (self.dependencies["alpha"]).cpp_info.components["alpha_exe"].bindirs[0]
+		copy(self, "*alpha_exe*", src=alpha_exe, dst=f"{self.build_folder}/output", excludes=["cmake*"])
 		ct = CMakeToolchain(self)
 		ct.generate()
 		cd = CMakeDeps(self)

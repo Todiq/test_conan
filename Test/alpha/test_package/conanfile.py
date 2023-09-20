@@ -23,8 +23,8 @@ class Pkg(ConanFile):
 	# 	cmake.configure()
 	# 	cmake.build()
 
-	# def test(self):
-	# 	extension = ".exe" if self.settings_build.os == "Windows" else ""
-	# 	self.run("alpha_exe{} mypath".format(extension))
+	def test(self):
+		extension = ".exe" if self.settings_build.os == "Windows" else ""
+		self.run("alpha_exe{} mypath".format(extension))
 		# cmd = os.path.join(self.cpp.build.bindir, "example")
 		# self.run(cmd, env="conanrun")
