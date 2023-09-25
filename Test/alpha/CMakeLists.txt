@@ -3,6 +3,7 @@ project(headers LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_SKIP_BUILD_RPATH TRUE) # Mimick Windows behaviour
 
 add_library(${PROJECT_NAME} INTERFACE)
 

@@ -43,14 +43,14 @@ class Pkg(ConanFile):
 		cmake_layout(self)
 
 	def generate(self):
-		alpha_exe = (self.dependencies["alpha"]).cpp_info.components["alpha_exe"].bindirs[0]
-		copy(self, "*alpha_exe*", src=alpha_exe, dst=f"{self.build_folder}/output", excludes=["cmake*"])
 		ct = CMakeToolchain(self)
 		ct.generate()
 		cd = CMakeDeps(self)
 		cd.generate()
 
 	def build(self):
+		extension = ".exe" if self.settings_build.os == "Windows" else ""
+		self.run(f"alpha_exe{extension}")
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()

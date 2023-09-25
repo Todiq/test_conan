@@ -50,6 +50,8 @@ class Pkg(ConanFile):
 		self.cpp.build.components["alpha_exe"].includedirs = []
 		self.cpp.build.components["alpha_exe"].libdirs = []
 		self.cpp.build.components["alpha_exe"].bindirs = [os.path.join("alpha_exe", bt)]
+		self.cpp.build.components["alpha_exe"].resdirs = ["alpha_exe"]
+		self.cpp.package.components["alpha_exe"].resdirs = ["share"]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
@@ -61,6 +63,10 @@ class Pkg(ConanFile):
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()
+		if self.conf.get("tools.build:skip_test") is False:
+			resdirs = self.cpp_info.components["alpha_exe"].resdirs
+			# Manipulation with hello.txt
+			print(f"resdirs : {resdirs}")
 
 	def package(self):
 		cmake = CMake(self)

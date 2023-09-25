@@ -26,5 +26,7 @@ class Pkg(ConanFile):
 	def test(self):
 		extension = ".exe" if self.settings_build.os == "Windows" else ""
 		self.run("alpha_exe{} mypath".format(extension))
+		resdirs = (self.dependencies[self.tested_reference_str]).cpp_info.components["alpha_exe"].resdirs
+		print(f"resdirs : {resdirs}")
 		# cmd = os.path.join(self.cpp.build.bindir, "example")
 		# self.run(cmd, env="conanrun")
