@@ -6,4 +6,4 @@
   #define ALPHA1_EXPORT
 #endif
 
-ALPHA1_EXPORT void	alpha1();
+ALPHA1_EXPORT void  alpha1();

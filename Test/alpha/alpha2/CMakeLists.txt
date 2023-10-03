@@ -1,6 +1,6 @@
 project(alpha2 LANGUAGES CXX)
 
-add_library(${PROJECT_NAME} SHARED)
+add_library(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
@@ -19,6 +19,8 @@ target_link_libraries(${PROJECT_NAME}
 		headers
 		alpha1
 )
+
+install(TARGETS ${PROJECT_NAME})
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/Alpha
 		TYPE INCLUDE

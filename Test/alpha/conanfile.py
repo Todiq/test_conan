@@ -39,7 +39,8 @@ class Pkg(ConanFile):
 		self.options["zlib/*"].shared=True
 
 	def layout(self):
-		cmake_layout(self)
+		bf = f"build-{self.settings.os}-{self.settings.compiler}{self.settings.compiler.version}-{self.settings.arch}".lower()
+		cmake_layout(self, build_folder=bf)
 		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
 
 		self.cpp.source.components["headers"].includedirs = ["include"]
@@ -60,13 +61,12 @@ class Pkg(ConanFile):
 		d.generate()
 
 	def build(self):
+		cache = os.path.join(self.build_folder, "CMakeCache.txt")
+		if os.path.isfile(cache) is True:
+			os.remove(cache)
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()
-		if self.conf.get("tools.build:skip_test") is False:
-			resdirs = self.cpp_info.components["alpha_exe"].resdirs
-			# Manipulation with hello.txt
-			print(f"resdirs : {resdirs}")
 
 	def package(self):
 		cmake = CMake(self)
