@@ -1,4 +1,4 @@
-#include <alpha/talk.h>
+#include <alpha/talk.hpp>
 
 void	beta()
 {
