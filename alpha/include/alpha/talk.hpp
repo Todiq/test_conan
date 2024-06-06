@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <rapidjson/document.h>
 
 void	talk(const std::string &sentence)
 {
