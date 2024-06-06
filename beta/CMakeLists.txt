@@ -21,14 +21,14 @@ endif()
 
 find_package(alpha QUIET)
 
-# add_executable(${PROJECT_NAME})
+add_executable(${PROJECT_NAME})
 
-# target_sources(${PROJECT_NAME}
-# 	PRIVATE
-# 		src/beta.cpp
-# )
+target_sources(${PROJECT_NAME}
+	PRIVATE
+		src/beta.cpp
+)
 
-# target_link_libraries(${PROJECT_NAME}
-# 	PRIVATE
-# 		Alpha::hello
-# )
+target_link_libraries(${PROJECT_NAME}
+	PRIVATE
+		Alpha::hello
+)
