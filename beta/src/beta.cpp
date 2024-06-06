@@ -1,7 +1,7 @@
 #include <alpha/talk.hpp>
 #include <alpha/hello.hpp>
 
-void	beta()
+int	main()
 {
 	hello();
 	talk("Beta");
