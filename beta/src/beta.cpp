@@ -1,6 +1,5 @@
 #include <alpha/talk.hpp>
-
-void	talk();
+#include <alpha/hello.hpp>
 
 void	beta()
 {
