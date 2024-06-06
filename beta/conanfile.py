@@ -1,6 +1,8 @@
 from conan import ConanFile
+from collections import namedtuple
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, collect_libs
+import os
 
 required_conan_version = ">=2.0.0"
 
@@ -10,37 +12,31 @@ class Pkg(ConanFile):
 
 	# Binary configuration
 	settings = "os", "compiler", "build_type", "arch"
-	options = {
-		"shared": [True, False],
-		"fPIC": [True, False],
-	}
-	default_options = {
-		"shared": True,
-		"fPIC": False,
-	}
+	options = { "shared": [True, False], "fPIC": [True, False] }
+	default_options = { "shared": True, "fPIC": False }
 
 	def export_sources(self):
 		copy(self, "*.cpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 
-	def build_requirements(self):
-		self.tool_requires("alpha/1.0")
-
 	def requirements(self):
 		self.requires("alpha/1.0")
 
 	def config_options(self):
-		if self.settings.os == "Windows":
+		if self.settings.get_safe("os") == "Windows":
 			self.options.rm_safe("fPIC")
 
 	def configure(self):
-		if self.options.shared:
+		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
 		self.options["alpha/*"].shared=True
 
 	def layout(self):
 		cmake_layout(self)
+		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
+		self.cpp.build.components["beta"].libdirs = [bt]
+		self.cpp.build.components["beta"].bindirs = [bt]
 
 	def generate(self):
 		ct = CMakeToolchain(self)
@@ -49,8 +45,6 @@ class Pkg(ConanFile):
 		cd.generate()
 
 	def build(self):
-		extension = ".exe" if self.settings_build.os == "Windows" else ""
-		self.run(f"alpha_exe{extension}")
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()
@@ -58,3 +52,8 @@ class Pkg(ConanFile):
 	def package(self):
 		cmake = CMake(self)
 		cmake.install()
+
+	def package_info(self):
+		self.cpp_info.components["beta"].requires = [
+			"alpha::alpha",
+		]
