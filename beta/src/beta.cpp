@@ -1,5 +1,4 @@
-// #include <alpha/talk.hpp>
-// #include <alpha/hello.hpp>
+#include <alpha/talk.hpp>
 
 __declspec(dllimport) void hello();
 
