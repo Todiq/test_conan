@@ -32,8 +32,8 @@ class Pkg(ConanFile):
 	def layout(self):
 		cmake_layout(self)
 		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.cpp.build.components["alpha"].libdirs = [os.path.join("BaseTest", bt)]
-		self.cpp.build.components["alpha"].bindirs = [os.path.join("BaseTest", bt)]
+		self.cpp.build.components["alpha"].libdirs = [bt]
+		self.cpp.build.components["alpha"].bindirs = [bt]
 		self.cpp.source.components["alpha"].includedirs = ["include"]
 
 	def generate(self):
@@ -52,6 +52,6 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.components["basetest"].libs = [f"alpha"]
-		self.cpp_info.components["basetest"].set_property("cmake_target_name", f"Alpha::alpha")
-		self.cpp_info.components["basetest"].requires = ["rapidjson::rapidjson"]
+		self.cpp_info.components["alpha"].libs = [f"alpha"]
+		self.cpp_info.components["alpha"].set_property("cmake_target_name", f"Alpha::alpha")
+		self.cpp_info.components["alpha"].requires = ["rapidjson::rapidjson"]
