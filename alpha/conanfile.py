@@ -1,5 +1,4 @@
 from conan import ConanFile
-from collections import namedtuple
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, collect_libs
 import os
@@ -32,9 +31,9 @@ class Pkg(ConanFile):
 	def layout(self):
 		cmake_layout(self)
 		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.cpp.build.components["alpha"].libdirs = [bt]
-		self.cpp.build.components["alpha"].bindirs = [bt]
-		self.cpp.source.components["alpha"].includedirs = ["include"]
+		self.cpp.source.components["hello"].includedirs = ["include"]
+		self.cpp.build.components["hello"].libdirs = [bt]
+		self.cpp.build.components["hello"].bindirs = [bt]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
@@ -52,6 +51,6 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.components["alpha"].libs = [f"alpha"]
-		self.cpp_info.components["alpha"].set_property("cmake_target_name", f"Alpha::alpha")
-		self.cpp_info.components["alpha"].requires = ["rapidjson::rapidjson"]
+		self.cpp_info.components["hello"].libs = ["hello"]
+		self.cpp_info.components["hello"].set_property("cmake_target_name", "Alpha::hello")
+		self.cpp_info.components["hello"].requires = ["rapidjson::rapidjson"]
