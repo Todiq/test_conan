@@ -6,14 +6,9 @@ def run(cmd):
         raise Exception(f"Failed CMD: {cmd}")
 
 
-# normal creation works
-#run("conan create Test/alpha --build=missing")
-#run("conan create Test/beta --build=missing")
+# remove things and define editables
+# run("conan remove * -c")
 
-# rmove things and define editables
-#run("conan remove * -c")
-run('conan editable add Test/alpha')
-run('conan build Test/alpha --build=missing --profile:host clang-release --profile:build clang-release')
-# run('conan build Test/alpha --build=missing --profile:host clang-debug --profile:build clang-debug')
-# run('conan test Test/alpha/test_package alpha/1.0 --conf "alpha/1.0:tools.build:skip_test=False"')
-# run('conan build Test/beta --settings:build "alpha/1.0:build_type=Debug" --settings:host "alpha/1.0:build_type=Debug"')
+run('conan editable add alpha')
+run('conan build alpha --build=missing --profile:all msvc')
+run('conan build beta --build=missing --profile:all msvc')

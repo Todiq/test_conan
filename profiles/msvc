@@ -1,0 +1,19 @@
+[settings]
+arch={{detect_api.detect_arch()}}
+build_type=Release
+compiler=msvc
+compiler.cppstd=14
+compiler.runtime=dynamic
+compiler.version=194
+os=Windows
+
+alpha*/*:compiler.cppstd=17
+beta*/*:compiler.cppstd=17
+
+[conf]
+alpha*/*:tools.env.virtualenv:powershell=True
+alpha*/*:tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
+alpha*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+beta*/*:tools.env.virtualenv:powershell=True
+beta*/*:tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
+beta*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
