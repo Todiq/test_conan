@@ -1,7 +1,6 @@
 #include <rapidjson/document.h>
 #include <alpha/talk.hpp>
-
-void	hello();
+#include <alpha/hello.hpp>
 
 void	hello()
 {
