@@ -22,7 +22,7 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 
 	def requirements(self):
-		self.requires("rapidjson/cci.20230929")
+		self.requires("rapidjson/cci.20230929", transitive_headers=True)
 
 	def configure(self):
 		if self.options.get_safe("shared") is True:
