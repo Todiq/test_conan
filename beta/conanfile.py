@@ -21,6 +21,7 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 
 	def requirements(self):
+		self.requires("boost/1.81.0")
 		self.requires("alpha/1.0")
 
 	def config_options(self):
@@ -31,6 +32,11 @@ class Pkg(ConanFile):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
 		self.options["alpha/*"].shared=True
+		self.options["boost/*"].bzip2=False
+		self.options["boost/*"].shared=True
+		self.options["boost/*"].without_python=False
+		self.options["boost/*"].without_stacktrace=True
+		self.options["boost/*"].zlib=False
 
 	def layout(self):
 		cmake_layout(self)
