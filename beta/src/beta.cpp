@@ -4,6 +4,6 @@ __declspec(dllimport) void hello();
 
 int	main()
 {
-	// hello();
-	// talk("Beta");
+	hello();
+	talk("Beta");
 }

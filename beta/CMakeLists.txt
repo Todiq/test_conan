@@ -32,3 +32,19 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE
 		Alpha::hello
 )
+
+install(TARGETS ${PROJECT_NAME} RUNTIME_DEPENDENCY_SET my_app_deps)
+
+install(RUNTIME_DEPENDENCY_SET my_app_deps
+    PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
+		[[HvsiFileTrust.*]]
+    POST_EXCLUDE_REGEXES
+        [[.*/system32/.*\.dll]]
+        [[^/lib.*]]
+        [[^/usr/lib.*]]
+    DIRECTORIES ${CONAN_RUNTIME_LIB_DIRS}
+)
