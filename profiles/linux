@@ -1,0 +1,21 @@
+{% set compiler, version, compiler_exe = detect_api.detect_default_compiler() %}
+{% set runtime, _ = detect_api.default_msvc_runtime(compiler) %}
+
+[settings]
+arch={{detect_api.detect_arch()}}
+build_type=Release
+compiler={{compiler}}
+compiler.cppstd=17
+compiler.libcxx={{detect_api.detect_libcxx(compiler, version, compiler_exe)}}
+compiler.version={{detect_api.default_compiler_version(compiler, version)}}
+os={{detect_api.detect_os()}}
+
+[conf]
+alpha*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+beta*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+tools.cmake.cmaketoolchain:generator=Ninja
+
+{% if compiler == "clang" %}
+	tools.build:compiler_executables = {"c": "clang", "cpp": "clang++", "rc": "llvm-rc", "ar": "llvm-ar", "ld": "ld.lld"}
+	cast*/*:tools.build:cxxflags=["-fansi-escape-codes -fcolor-diagnostics"]
+{% endif %}
