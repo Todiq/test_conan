@@ -22,31 +22,29 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 
 	def requirements(self):
+		self.requires("cpython/3.9.19")
 		self.requires("boost/1.81.0")
-		self.requires("icu/72.1")
-		self.requires("libxml2/2.11.6")
-		self.requires("libxslt/1.1.34")
-		self.requires("pugixml/1.13")
-		self.requires("rapidjson/cci.20230929", transitive_headers=True)
-		self.requires("xerces-c/3.2.4")
 
 	def configure(self):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
-		if self.settings.get_safe("os") != "Windows":
-			self.options["icu/*"].data_packaging="library"
 		self.options["boost/*"].bzip2=False
 		self.options["boost/*"].shared=True
 		self.options["boost/*"].without_python=False
 		self.options["boost/*"].without_stacktrace=True
 		self.options["boost/*"].zlib=False
-		self.options["icu/*"].shared=True
-		self.options["libxml2/*"].shared=True
-		self.options["libxml2/*"].zlib=False
-		self.options["libxslt/*"].shared=True
-		self.options["pugixml/*"].header_only=True
-		self.options["xerces-c/*"].shared=True
-		self.options["xerces-c/*"].char_type="char16_t"
+		self.options["cpython/*"].shared=True
+		self.options["cpython/*"].optimizations=False
+		self.options["cpython/*"].lto=False
+		self.options["cpython/*"].docstrings=False
+		self.options["cpython/*"].pymalloc=False
+		self.options["cpython/*"].with_bz2=False
+		self.options["cpython/*"].with_gdbm=False
+		self.options["cpython/*"].with_nis=False
+		self.options["cpython/*"].with_sqlite3=False
+		self.options["cpython/*"].with_tkinter=False
+		self.options["cpython/*"].with_curses=False
+		self.options["cpython/*"].with_lzma=False
 
 	def layout(self):
 		cmake_layout(self)
@@ -74,11 +72,6 @@ class Pkg(ConanFile):
 		self.cpp_info.components["hello"].libs = ["hello"]
 		self.cpp_info.components["hello"].set_property("cmake_target_name", "Alpha::hello")
 		self.cpp_info.components["hello"].requires = [
-			"boost::headers", "boost::filesystem", "boost::iostreams", "boost::locale", "boost::log", "boost::regex",
-			"icu::icu-data", "icu::icu-i18n",
-			"libxml2::libxml2",
-			"libxslt::libxslt",
-			"pugixml::pugixml",
-			"rapidjson::rapidjson",
-			"xerces-c::xerces-c"
+			"boost::python",
+			"cpython::cpython"
 		]

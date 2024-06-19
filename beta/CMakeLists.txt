@@ -22,8 +22,6 @@ if (WIN32)
 endif()
 
 find_package(alpha QUIET)
-find_package(Boost COMPONENTS REQUIRED headers log QUIET)
-find_package(PostgreSQL QUIET)
 
 add_executable(${PROJECT_NAME})
 
@@ -35,8 +33,6 @@ target_sources(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
         Alpha::hello
-        Boost::headers
-        Boost::log
 )
 
 install(TARGETS ${PROJECT_NAME} RUNTIME_DEPENDENCY_SET my_app_deps)

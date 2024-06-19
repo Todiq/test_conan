@@ -19,13 +19,8 @@ if (WIN32)
 	add_compile_options(/W3)
 endif()
 
-find_package(Boost COMPONENTS REQUIRED headers filesystem iostreams locale log regex QUIET)
-find_package(ICU COMPONENTS REQUIRED data i18n QUIET)
-find_package(LibXslt QUIET)
-find_package(libxml2 QUIET)
-find_package(pugixml QUIET)
-find_package(XercesC QUIET)
-find_package(RapidJSON QUIET)
+find_package(Boost QUIET)
+find_package(Python COMPONENTS Development QUIET)
 
 # Global include folder
 add_library(headers INTERFACE)
@@ -52,18 +47,9 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		rapidjson
 		Alpha::headers
-	PRIVATE
-		Boost::headers
-		Boost::iostreams
-		Boost::log
-		Boost::locale
-		ICU::i18n
-		LibXml2::LibXml2
-		pugixml::pugixml
-		libxslt::libxslt
-		XercesC::XercesC
+		Boost::python
+		Python::Python
 )
 
 install(TARGETS ${PROJECT_NAME})

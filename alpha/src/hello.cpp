@@ -1,6 +1,13 @@
 #include <alpha/talk.hpp>
+#include <boost/python.hpp>
 
-void	hello()
+char const* greet()
 {
-	talk("hello!");
+   return "hello, world";
+}
+
+BOOST_PYTHON_MODULE(hello_ext)
+{
+    using namespace boost::python;
+    def("greet", greet);
 }
