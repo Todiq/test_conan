@@ -1,13 +1,11 @@
-#include <alpha/talk.hpp>
-#include <iostream>
+#include <alpha/alpha.hpp>
 
-#if (MSCV)
-__declspec(dllimport) char const* greet();
-#endif
+// #if _MSC_VER
+// 	__declspec(dllimport) void test();
+// #endif
 
 int	main()
 {
-	std::cout << greet() << std::endl;
-
+	test();
 	return 0;
 }

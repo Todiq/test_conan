@@ -1,0 +1,15 @@
+include(msvc)
+{% set compiler, version, compiler_exe = detect_api.detect_clang_compiler(compiler_exe="clang") %}
+{% set version = detect_api.default_compiler_version(compiler, version) %}
+
+[settings]
+test*/*:compiler={{compiler}}
+test*/*:compiler.cppstd=17
+test*/*:compiler.runtime_version=v144
+test*/*:compiler.version={{version}}
+
+[conf]
+test*/*:tools.build:compiler_executables = {"c": "clang-cl", "cpp": "clang-cl", "rc": "llvm-rc"}
+test*/*:tools.build:cxxflags=["-fansi-escape-codes -fcolor-diagnostics"]
+test*/*:tools.build:exelinkflags=["-fuse-ld=lld"]
+test*/*:tools.build:sharedlinkflags=["-fuse-ld=lld"]

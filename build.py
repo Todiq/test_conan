@@ -10,5 +10,5 @@ def run(cmd):
 # run("conan remove * -c")
 
 run('conan editable add alpha')
-run('conan build alpha --build=missing --profile:all msvc')
-run('conan build beta --build=missing --profile:all msvc')
+run('conan build --profile:all ./profiles/msvc alpha --build=missing --profile:all msvc')
+run('conan build --profile:all ./profiles/msvc beta --build=missing --profile:all msvc')

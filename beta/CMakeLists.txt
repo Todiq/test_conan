@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.27)
 
 project(beta LANGUAGES CXX)
 
@@ -21,7 +21,7 @@ if (WIN32)
 	add_compile_options(/W3)
 endif()
 
-find_package(alpha QUIET)
+find_package(test_alpha QUIET)
 
 add_executable(${PROJECT_NAME})
 
@@ -32,7 +32,7 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
-        Alpha::hello
+        Alpha::test
 )
 
 install(TARGETS ${PROJECT_NAME} RUNTIME_DEPENDENCY_SET my_app_deps)

@@ -7,7 +7,7 @@ import os
 required_conan_version = ">=2.0.0"
 
 class Pkg(ConanFile):
-	name = "beta"
+	name = "test_beta"
 	version = "1.0"
 
 	# Binary configuration
@@ -21,7 +21,7 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=["build"])
 
 	def requirements(self):
-		self.requires("alpha/1.0")
+		self.requires("test_alpha/1.0")
 
 	def config_options(self):
 		if self.settings.get_safe("os") == "Windows":
@@ -30,13 +30,13 @@ class Pkg(ConanFile):
 	def configure(self):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
-		self.options["alpha/*"].shared=True
+		self.options["test_alpha/*"].shared=True
 
 	def layout(self):
 		cmake_layout(self)
 		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.cpp.build.components["beta"].libdirs = [bt]
-		self.cpp.build.components["beta"].bindirs = [bt]
+		self.cpp.build.components["test_beta"].libdirs = [bt]
+		self.cpp.build.components["test_beta"].bindirs = [bt]
 
 	def generate(self):
 		ct = CMakeToolchain(self)
