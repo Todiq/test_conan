@@ -7,8 +7,10 @@ def run(cmd):
 
 
 # remove things and define editables
-# run("conan remove * -c")
+run("conan remove * -c")
 
-run('conan editable add alpha')
-run('conan build --profile:all ./profiles/msvc alpha --build=missing --profile:all msvc')
-run('conan build --profile:all ./profiles/msvc beta --build=missing --profile:all msvc')
+# run('conan editable add alpha')
+run('conan build --profile:all ./profiles/msvc alpha --build=missing')
+# run('conan build --profile:all ./profiles/msvc beta --build=missing')
+run('conan build --profile:all ./profiles/clang-windows alpha --build=missing')
+# run('conan build --profile:all ./profiles/clang-windows beta --build=missing')
