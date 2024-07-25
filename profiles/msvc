@@ -22,4 +22,4 @@ test*/*:compiler.cppstd=17
 	test*/*:tools.env.virtualenv:powershell=True
 {% endif %}
 test*/*:tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
-test*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+test*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler"]

@@ -1,43 +1,34 @@
-// C++ Program to illustrate the use of filesystem classes
-// and features
 #include <alpha/alpha.hpp>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
+#include <zlib.h>
+#include <stdio.h>
+#include <string.h>
 
-// for simplicity
-using namespace std;
-using namespace std::filesystem;
-
-void	test()
+void test()
 {
-	// Define the path to create directory
-	path directorypath = "mydirectory";
+	const unsigned char pData[] = { "test" };
+	unsigned long nDataSize = 100;
 
-	// To check if the directory exist or not, create it if
-	// doesn't exist
-	if (!exists(directorypath)) {
-		create_directory(directorypath);
-		cout << "Directory created: " << directorypath
-			<< endl;
+	printf("Initial size: %d\n", nDataSize);
+
+	unsigned long nCompressedDataSize = nDataSize;
+	unsigned char * pCompressedData = new unsigned char[nCompressedDataSize];
+
+	int nResult = compress2(pCompressedData, &nCompressedDataSize, pData, nDataSize, 9);
+
+	if (nResult == Z_OK)
+	{
+		printf("Compressed size: %d\n", nCompressedDataSize);
+
+		unsigned char * pUncompressedData = new unsigned char[nDataSize];
+		nResult = uncompress(pUncompressedData, &nDataSize, pCompressedData, nCompressedDataSize);
+		if (nResult == Z_OK)
+		{
+			printf("Uncompressed size: %d\n", nDataSize);
+			if (memcmp(pUncompressedData, pData, nDataSize) == 0)
+				printf("Great Success\n");
+		}
+		delete [] pUncompressedData;
 	}
 
-	// Define the file path within the directory and
-	// combining the directory
-	path filepath = directorypath / "my_file.txt";
-
-	// Create and open the file for writing using
-	// std::ofstream
-	ofstream file(filepath);
-	if (file.is_open()) {
-		// Write data to the file
-		file << "Hello, FileSystem!";
-		file.close();
-		cout << "File created: " << filepath << endl;
-	}
-	else {
-		// Handle the case if any error occured
-		cerr << "Failed to create file: " << filepath
-			<< endl;
-	}
+	delete [] pCompressedData;
 }

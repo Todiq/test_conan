@@ -11,6 +11,7 @@ set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR};$ORIGIN/${CMAKE_INSTALL_LIBEXECDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_BINDIR .)
 
 if (WIN32)
 	add_compile_options(-D_AFXDLL)
@@ -22,6 +23,7 @@ if (WIN32)
 endif()
 
 find_package(test_alpha QUIET)
+find_package(ZLIB QUIET)
 
 add_executable(${PROJECT_NAME})
 
@@ -33,9 +35,13 @@ target_sources(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
         Alpha::test
+		ZLIB::ZLIB
 )
 
-install(TARGETS ${PROJECT_NAME} RUNTIME_DEPENDENCY_SET my_app_deps)
+install(TARGETS ${PROJECT_NAME}
+	RUNTIME_DEPENDENCY_SET my_app_deps
+	DESTINATION ${DEPS_DESTINATION}
+)
 
 install(RUNTIME_DEPENDENCY_SET my_app_deps
 	PRE_EXCLUDE_REGEXES

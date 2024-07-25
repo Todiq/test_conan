@@ -21,9 +21,13 @@ class Pkg(ConanFile):
 		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 
+	def requirements(self):
+		self.requires("zlib/1.3.1")
+
 	def configure(self):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
+		self.options["zlib/*"].shared=True
 
 	def layout(self):
 		cmake_layout(self)

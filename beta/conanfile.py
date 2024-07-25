@@ -22,6 +22,7 @@ class Pkg(ConanFile):
 
 	def requirements(self):
 		self.requires("test_alpha/1.0")
+		self.requires("zlib/1.3.1")
 
 	def config_options(self):
 		if self.settings.get_safe("os") == "Windows":
@@ -31,6 +32,7 @@ class Pkg(ConanFile):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
 		self.options["test_alpha/*"].shared=True
+		self.options["zlib/*"].shared=True
 
 	def layout(self):
 		cmake_layout(self)
