@@ -51,19 +51,4 @@ target_link_libraries(${PROJECT_NAME}
 		ZLIB::ZLIB
 )
 
-install(TARGETS ${PROJECT_NAME}
-	RUNTIME_DEPENDENCY_SET my_app_deps
-	DESTINATION ${DEPS_DESTINATION}
-)
-
-install(RUNTIME_DEPENDENCY_SET my_app_deps
-	PRE_EXCLUDE_REGEXES
-		[=[api-ms-]=] # VC Redistibutable DLLs
-		[=[ext-ms-]=] # Windows extension DLLs
-		[[kernel32\.dll]] # Default in conan doc
-		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]] # Default in conan doc
-	POST_EXCLUDE_REGEXES
-		[=[.*system32\/.*\.dll]=] # Windows system DLLs
-		[=[^\/(lib|usr\/lib|usr\/local\/lib)]=] # Unix system libraries
-	DIRECTORIES ${CONAN_RUNTIME_LIB_DIRS}
-)
+install(TARGETS ${PROJECT_NAME})

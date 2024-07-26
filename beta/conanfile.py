@@ -37,8 +37,10 @@ class Pkg(ConanFile):
 	def layout(self):
 		cmake_layout(self)
 		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.cpp.build.components["test_beta"].libdirs = [bt]
-		self.cpp.build.components["test_beta"].bindirs = [bt]
+		self.cpp.build.components["beta"].libdirs = [bt]
+		self.cpp.build.components["beta"].bindirs = [bt]
+		self.cpp.build.components["betaimpl"].libdirs = [os.path.join("betaimpl", bt)]
+		self.cpp.build.components["betaimpl"].bindirs = [os.path.join("betaimpl", bt)]
 
 	def generate(self):
 		ct = CMakeToolchain(self)
