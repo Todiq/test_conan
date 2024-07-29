@@ -2,7 +2,6 @@ project(betaimpl LANGUAGES CXX)
 
 add_library(${PROJECT_NAME})
 
-
 target_sources(${PROJECT_NAME}
 	PRIVATE
 		src/betaimpl.cpp
@@ -19,4 +18,9 @@ target_include_directories(${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+install(TARGETS ${PROJECT_NAME}
+	RUNTIME_DEPENDENCY_SET my_app_deps
+	DESTINATION ${DEPS_DESTINATION}
 )
