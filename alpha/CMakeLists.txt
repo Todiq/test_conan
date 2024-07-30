@@ -20,20 +20,7 @@ if (WIN32)
 	add_compile_options(/W3)
 endif()
 
-find_package(ZLIB QUIET)
-
-# Global include folder
-add_library(headers INTERFACE)
-add_library(Alpha::headers ALIAS headers)
-
-target_include_directories(headers
-	INTERFACE
-		${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/alpha
-		TYPE INCLUDE
-)
+find_package(libxml2 QUIET)
 
 # Library
 
@@ -45,10 +32,16 @@ target_sources(${PROJECT_NAME}
 		src/alpha.cpp
 )
 
+target_include_directories(${PROJECT_NAME}
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		Alpha::headers
-		ZLIB::ZLIB
+		LibXml2::LibXml2
 )
 
 install(TARGETS ${PROJECT_NAME})

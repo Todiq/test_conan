@@ -21,7 +21,6 @@ if (WIN32)
 endif()
 
 find_package(test_alpha QUIET)
-find_package(ZLIB QUIET)
 
 add_executable(${PROJECT_NAME})
 
@@ -32,16 +31,20 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
-        Alpha::test
 		betaimpl
 )
 
 add_subdirectory(betaimpl)
 
-install(TARGETS ${PROJECT_NAME}
-	RUNTIME_DEPENDENCY_SET my_app_deps
-	DESTINATION ${DEPS_DESTINATION}
-)
+# install(TARGETS ${PROJECT_NAME}
+# 	RUNTIME_DEPENDENCY_SET my_app_deps
+# 	RUNTIME
+# 		DESTINATION "${CMAKE_BINARY_DIR}"
+# 	LIBRARY
+# 		DESTINATION "${CMAKE_LIBRARY_DIR}"
+# 	ARCHIVE
+# 		DESTINATION "${CMAKE_ARCHIVE_DIR}"
+# )
 
 install(RUNTIME_DEPENDENCY_SET my_app_deps
 	PRE_EXCLUDE_REGEXES
@@ -51,6 +54,6 @@ install(RUNTIME_DEPENDENCY_SET my_app_deps
 		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
 	POST_EXCLUDE_REGEXES
 		[=[.*system32\/.*\.dll]=]
-		[=[^\/(lib|usr\/lib|usr\/local\/lib)]=]
+		[=[^\/(lib|usr\/lib|usr\/local\/lib\/lib64)]=]
 	DIRECTORIES ${CONAN_RUNTIME_LIB_DIRS}
 )

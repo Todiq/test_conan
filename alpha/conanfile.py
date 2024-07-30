@@ -22,12 +22,14 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 
 	def requirements(self):
-		self.requires("zlib/1.3.1")
+		self.requires("libxml2/2.11.6", transitive_headers=True)
 
 	def configure(self):
 		if self.options.get_safe("shared") is True:
 			self.options.rm_safe("fPIC")
-		self.options["zlib/*"].shared=True
+		self.options["libxml2/*"].shared=True
+		self.options["libxml2/*"].zlib=False
+		self.options["libxml2/*"].iconv=False
 
 	def layout(self):
 		cmake_layout(self)
@@ -54,3 +56,4 @@ class Pkg(ConanFile):
 	def package_info(self):
 		self.cpp_info.components["test"].libs = ["test"]
 		self.cpp_info.components["test"].set_property("cmake_target_name", "Alpha::test")
+		self.cpp_info.components["test"].requires = ["libxml2::libxml2"]

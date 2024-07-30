@@ -1,1 +1,3 @@
-void	test2();
+#pragma once
+
+void	test();

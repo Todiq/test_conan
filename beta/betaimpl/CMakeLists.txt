@@ -10,7 +10,6 @@ target_sources(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
         Alpha::test
-		ZLIB::ZLIB
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -22,5 +21,10 @@ target_include_directories(${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}
 	RUNTIME_DEPENDENCY_SET my_app_deps
-	DESTINATION ${DEPS_DESTINATION}
+	RUNTIME
+		DESTINATION "${CMAKE_BINARY_DIR}"
+	LIBRARY
+		DESTINATION "${CMAKE_LIBRARY_DIR}"
+	ARCHIVE
+		DESTINATION "${CMAKE_ARCHIVE_DIR}"
 )

@@ -1,34 +1,31 @@
 #include <alpha/alpha.hpp>
-#include <zlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <libxml/HTMLparser.h>
 
-void test()
+void traverse_dom_trees(xmlNode * a_node)
 {
-	const unsigned char pData[] = { "test" };
-	unsigned long nDataSize = 100;
+    xmlNode *cur_node = NULL;
 
-	printf("Initial size: %d\n", nDataSize);
+    if(NULL == a_node)
+    {
+        //printf("Invalid argument a_node %p\n", a_node);
+        return;
+    }
 
-	unsigned long nCompressedDataSize = nDataSize;
-	unsigned char * pCompressedData = new unsigned char[nCompressedDataSize];
-
-	int nResult = compress2(pCompressedData, &nCompressedDataSize, pData, nDataSize, 9);
-
-	if (nResult == Z_OK)
-	{
-		printf("Compressed size: %d\n", nCompressedDataSize);
-
-		unsigned char * pUncompressedData = new unsigned char[nDataSize];
-		nResult = uncompress(pUncompressedData, &nDataSize, pCompressedData, nCompressedDataSize);
-		if (nResult == Z_OK)
-		{
-			printf("Uncompressed size: %d\n", nDataSize);
-			if (memcmp(pUncompressedData, pData, nDataSize) == 0)
-				printf("Great Success\n");
-		}
-		delete [] pUncompressedData;
-	}
-
-	delete [] pCompressedData;
+    for (cur_node = a_node; cur_node; cur_node = cur_node->next) 
+    {
+        if (cur_node->type == XML_ELEMENT_NODE) 
+        {
+            /* Check for if current node should be exclude or not */
+            printf("Node type: Text, name: %s\n", cur_node->name);
+        }
+        else if(cur_node->type == XML_TEXT_NODE)
+        {
+            /* Process here text node, It is available in cpStr :TODO: */
+            printf("node type: Text, node content: %s,  content length %d\n", (char *)cur_node->content, strlen((char *)cur_node->content));
+        }
+        traverse_dom_trees(cur_node->children);
+    }
 }

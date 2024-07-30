@@ -1,4 +1,3 @@
-#include <alpha/alpha.hpp>
 #include <beta/betaimpl/betaimpl.hpp>
 
 // #if _MSC_VER
@@ -8,5 +7,4 @@
 int	main()
 {
 	test();
-	test2();
 }
