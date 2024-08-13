@@ -22,7 +22,7 @@ class Pkg(ConanFile):
 		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
 
 	def requirements(self):
-		self.requires("libxml2/2.11.6", transitive_headers=True)
+		self.requires("libxml2/2.11.7", transitive_headers=True)
 
 	def configure(self):
 		if self.options.get_safe("shared") is True:
@@ -34,9 +34,11 @@ class Pkg(ConanFile):
 	def layout(self):
 		cmake_layout(self)
 		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.cpp.source.components["test"].includedirs = ["include"]
-		self.cpp.build.components["test"].libdirs = [bt]
-		self.cpp.build.components["test"].bindirs = [bt]
+		self.cpp.source.resdirs = ["source"]
+		self.cpp.package.resdirs = ["package"]
+		self.cpp.source.includedirs = ["include"]
+		self.cpp.build.libdirs = [bt]
+		self.cpp.build.bindirs = [bt]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
@@ -54,6 +56,7 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.components["test"].libs = ["test"]
-		self.cpp_info.components["test"].set_property("cmake_target_name", "Alpha::test")
-		self.cpp_info.components["test"].requires = ["libxml2::libxml2"]
+		self.cpp_info.libs = ["test"]
+		self.cpp_info.set_property("cmake_target_name", "Alpha::test")
+		self.cpp_info.requires = ["libxml2::libxml2"]
+		self.runenv_info.define("TEST", os.path.join(self.package_folder, self.cpp_info.resdirs[0]))
