@@ -21,6 +21,7 @@ if (WIN32)
 endif()
 
 find_package(test_alpha QUIET)
+find_package(Python COMPONENTS Development QUIET)
 
 add_executable(${PROJECT_NAME})
 

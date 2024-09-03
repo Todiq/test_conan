@@ -20,7 +20,8 @@ if (WIN32)
 	add_compile_options(/W3)
 endif()
 
-find_package(libxml2 QUIET)
+find_package(Boost COMPONENTS REQUIRED boost filesystem log program_options python QUIET)
+find_package(Python COMPONENTS Development QUIET)
 
 # Library
 
@@ -41,7 +42,8 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		LibXml2::LibXml2
+		Boost::python
+		Python::Python
 )
 
 install(TARGETS ${PROJECT_NAME})

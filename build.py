@@ -18,5 +18,5 @@ run("conan remove 'test*' -c")
 run('conan editable add alpha')
 
 run(f"conan build --profile:all {profile} alpha --build=missing")
-run(f"conan install --profile:all {profile} beta --no-remote")
+run(f"conan build --profile:all {profile} beta --no-remote")
 # run('cmake --install ./beta/build/windows-msvc/ --prefix Release/')

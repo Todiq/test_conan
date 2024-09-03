@@ -1,5 +1,4 @@
 #include <alpha/alpha.hpp>
-#include <beta/betaimpl/betaimpl.hpp>
 #include <iostream>
 
 // #if _MSC_VER
@@ -8,6 +7,13 @@
 
 void	test()
 {
-	traverse_dom_trees(nullptr);
-	std::cout << "Testing" << std::endl;
+	std::cout << greet() << std::endl;
+}
+
+#include <boost/python.hpp>
+
+BOOST_PYTHON_MODULE(hi)
+{
+    using namespace boost::python;
+    def("hi", greet);
 }

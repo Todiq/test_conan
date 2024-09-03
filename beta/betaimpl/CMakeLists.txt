@@ -10,6 +10,7 @@ target_sources(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
         Alpha::test
+		Python::Python
 )
 
 target_include_directories(${PROJECT_NAME}

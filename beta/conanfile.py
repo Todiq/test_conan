@@ -22,6 +22,7 @@ class Pkg(ConanFile):
 
 	def requirements(self):
 		self.requires("test_alpha/1.0")
+		self.requires("cpython/3.9.19")
 
 	def config_options(self):
 		if self.settings.get_safe("os") == "Windows":
