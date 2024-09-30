@@ -50,7 +50,6 @@ _deps
 
 ## Conan
 
-conan.lock
 conanbuildinfo.cmake
 conanbuildinfo.txt
 conaninfo.txt

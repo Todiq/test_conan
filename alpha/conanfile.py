@@ -65,6 +65,17 @@ class Pkg(ConanFile):
 		self.options["boost/*"].without_type_erasure=True
 		self.options["boost/*"].without_url=True
 		self.options["boost/*"].without_wave=True
+		self.options["cpython/*"].optimizations=False
+		self.options["cpython/*"].lto=False
+		self.options["cpython/*"].docstrings=False
+		self.options["cpython/*"].pymalloc=False
+		self.options["cpython/*"].with_bz2=False
+		self.options["cpython/*"].with_gdbm=False
+		self.options["cpython/*"].with_nis=False
+		self.options["cpython/*"].with_sqlite3=False
+		self.options["cpython/*"].with_tkinter=False
+		self.options["cpython/*"].with_curses=False
+		self.options["cpython/*"].with_lzma=False
 
 	def layout(self):
 		cmake_layout(self)
