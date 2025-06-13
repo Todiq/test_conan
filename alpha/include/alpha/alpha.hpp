@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/thread.hpp>
-#include <boost/chrono.hpp>
+#include "zlib.h"
 
 void thread();

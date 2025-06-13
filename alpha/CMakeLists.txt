@@ -17,7 +17,7 @@ add_compile_options(
 	"$<$<CXX_COMPILER_ID:MSVC>:/W4;/D_AFXDLL;/D_SBCS;/D_WIN32_WINNT=0x0A00>"
 )
 
-find_package(Boost QUIET)
+find_package(ZLIB QUIET)
 
 # Library
 
@@ -37,8 +37,7 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		Boost::thread
-		Boost::chrono
+		ZLIB::ZLIB
 )
 
 install(TARGETS ${PROJECT_NAME})
