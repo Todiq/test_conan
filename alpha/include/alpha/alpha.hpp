@@ -1,3 +1,6 @@
 #pragma once
 
-char const* greet();
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
+
+void thread();

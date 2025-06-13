@@ -15,8 +15,8 @@ if platform.system() == "Windows":
 # remove things and define editables
 run("conan remove 'test*' -c")
 
-run('conan editable add alpha')
+# run('conan editable add alpha')
 
-run(f"conan build --profile:all {profile} alpha --build=missing")
+run(f"conan create --profile:all {profile} alpha --build=missing")
 run(f"conan build --profile:all {profile} beta --no-remote")
 # run('cmake --install ./beta/build/windows-msvc/ --prefix Release/')

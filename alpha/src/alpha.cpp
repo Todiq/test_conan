@@ -1,14 +1,22 @@
 #include <alpha/alpha.hpp>
+#include <iostream>
 
-char const* greet()
+void wait(int seconds)
 {
-   return "hello, world";
+	boost::this_thread::sleep_for(boost::chrono::seconds{seconds});
 }
 
-#include <boost/python.hpp>
-
-BOOST_PYTHON_MODULE(hello)
+void thread()
 {
-    using namespace boost::python;
-    def("greet", greet);
+	for (int i = 0; i < 5; ++i)
+	{
+		wait(1);
+		std::cout << i << '\n';
+	}
+}
+
+int main()
+{
+	boost::thread t{thread};
+	t.join();
 }

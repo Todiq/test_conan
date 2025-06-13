@@ -1,9 +1,10 @@
-from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
-from conan.tools.files import copy, collect_libs
 import os
 
-required_conan_version = ">=2.0.0"
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeConfigDeps, cmake_layout
+from conan.tools.files import copy, collect_libs
+
+required_conan_version = ">=2.17.0"
 
 class Pkg(ConanFile):
 	name = "test_alpha"
@@ -16,13 +17,11 @@ class Pkg(ConanFile):
 	default_options = { "shared": True, "fPIC": False }
 
 	def export_sources(self):
-		to_exclude = ["build"]
-		copy(self, "*.cpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
-		copy(self, "*.hpp", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
-		copy(self, "*CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder, excludes=to_exclude)
+		copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
+		copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
+		copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
 	def requirements(self):
-		self.requires("cpython/3.9.19", transitive_headers=True)
 		self.requires("boost/1.85.0", transitive_headers=True)
 
 	def configure(self):
@@ -65,31 +64,14 @@ class Pkg(ConanFile):
 		self.options["boost/*"].without_type_erasure=True
 		self.options["boost/*"].without_url=True
 		self.options["boost/*"].without_wave=True
-		self.options["cpython/*"].optimizations=False
-		self.options["cpython/*"].lto=False
-		self.options["cpython/*"].docstrings=False
-		self.options["cpython/*"].pymalloc=False
-		self.options["cpython/*"].with_bz2=False
-		self.options["cpython/*"].with_gdbm=False
-		self.options["cpython/*"].with_nis=False
-		self.options["cpython/*"].with_sqlite3=False
-		self.options["cpython/*"].with_tkinter=False
-		self.options["cpython/*"].with_curses=False
-		self.options["cpython/*"].with_lzma=False
 
 	def layout(self):
 		cmake_layout(self)
-		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		self.layouts.source.runenv_info.define("TEST", "source")
-		self.layouts.package.runenv_info.define("TEST", "package")
-		self.cpp.source.includedirs = ["include"]
-		self.cpp.build.libdirs = [bt]
-		self.cpp.build.bindirs = [bt]
 
 	def generate(self):
 		tc = CMakeToolchain(self)
 		tc.generate()
-		d = CMakeDeps(self)
+		d = CMakeConfigDeps(self)
 		d.generate()
 
 	def build(self):
@@ -102,6 +84,8 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		self.cpp_info.libs = ["test"]
-		self.cpp_info.set_property("cmake_target_name", "Alpha::test")
-		self.cpp_info.requires = ["boost::python", "cpython::cpython"]
+		ext = ".exe" if self.settings.os == "Windows" else ""
+		self.cpp_info.set_property("cmake_target_name", "Alpha::alpha")
+		self.cpp_info.requires = ["boost::thread"]
+		self.cpp_info.exe = [f"alpha{ext}"]
+		self.cpp_info.location = f"alpha{ext}"

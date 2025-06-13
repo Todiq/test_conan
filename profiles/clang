@@ -17,3 +17,4 @@ tools.build:compiler_executables = {"c": "clang", "cpp": "clang++", "rc": "llvm-
 test*/*:tools.build:cxxflags=["-fansi-escape-codes -fcolor-diagnostics"]
 test*/*:tools.build:exelinkflags=["-fuse-ld=lld"]
 test*/*:tools.build:sharedlinkflags=["-fuse-ld=lld"]
+tools.cmake.cmakedeps:new=will_break_next

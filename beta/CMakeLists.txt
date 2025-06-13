@@ -13,48 +13,38 @@ set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 set(CMAKE_INSTALL_BINDIR .)
 
-if (WIN32)
-	add_compile_options(-D_AFXDLL)
-	add_compile_options(-D_SBCS)
-	add_compile_options(-D_WIN32_WINNT=0x0A00)
-	add_compile_options(/W3)
-endif()
+add_compile_options(
+	"$<$<CXX_COMPILER_ID:MSVC>:/W4;/D_AFXDLL;/D_SBCS;/D_WIN32_WINNT=0x0A00>"
+)
 
 find_package(test_alpha QUIET)
-find_package(Python3 COMPONENTS Development QUIET)
 
-add_executable(${PROJECT_NAME})
+get_target_property(alpha_exe Alpha::alpha LOCATION) # IMPORTED_LOCATION is usually the field used
 
-target_sources(${PROJECT_NAME}
-	PRIVATE
-		src/beta.cpp
-)
+# get_target_property(alpha_libs Alpha::alpha LINK_LIBRARIES) # Field not populated
 
-target_link_libraries(${PROJECT_NAME}
-	PRIVATE
-		betaimpl
-)
+print_target_properties(Alpha::alpha)
 
-add_subdirectory(betaimpl)
+# Only callable for targets built by this project
 
-# install(TARGETS ${PROJECT_NAME}
-# 	RUNTIME_DEPENDENCY_SET my_app_deps
-# 	RUNTIME
-# 		DESTINATION "${CMAKE_BINARY_DIR}"
-# 	LIBRARY
-# 		DESTINATION "${CMAKE_LIBRARY_DIR}"
-# 	ARCHIVE
-# 		DESTINATION "${CMAKE_ARCHIVE_DIR}"
+# install(RUNTIME_DEPENDENCY_SET my_app_deps
+# 	PRE_EXCLUDE_REGEXES
+# 		[=[api-ms-]=]
+# 		[=[ext-ms-]=]
+# 		[[kernel32\.dll]]
+# 		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
+# 	POST_EXCLUDE_REGEXES
+# 		[=[.*system32\/.*\.dll]=]
+# 		[=[^\/(lib|usr\/lib|usr\/local\/lib\/lib64)]=]
+# 	DIRECTORIES
+# 		${CONAN_RUNTIME_LIB_DIRS}
 # )
 
-install(RUNTIME_DEPENDENCY_SET my_app_deps
-	PRE_EXCLUDE_REGEXES
-		[=[api-ms-]=]
-		[=[ext-ms-]=]
-		[[kernel32\.dll]]
-		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
-	POST_EXCLUDE_REGEXES
-		[=[.*system32\/.*\.dll]=]
-		[=[^\/(lib|usr\/lib|usr\/local\/lib\/lib64)]=]
-	DIRECTORIES ${CONAN_RUNTIME_LIB_DIRS}
-)
+install(PROGRAMS ${alpha_exe} DESTINATION bin)
+
+# foreach(lib ${alpha_libs})
+#   get_target_property(lib_path ${lib} LOCATION)
+#   if(lib_path)
+#     install(FILES ${lib_path} DESTINATION lib)
+#   endif()
+# endforeach()
