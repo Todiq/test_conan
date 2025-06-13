@@ -17,32 +17,26 @@ add_compile_options(
 	"$<$<CXX_COMPILER_ID:MSVC>:/W4;/D_AFXDLL;/D_SBCS;/D_WIN32_WINNT=0x0A00>"
 )
 
-find_package(test_alpha QUIET)
+find_package(test_alpha REQUIRED)
+find_package(Python3 REQUIRED)
 
-get_target_property(alpha_exe Alpha::alpha LOCATION) # IMPORTED_LOCATION is usually the field used
+install(
+	IMPORTED_RUNTIME_ARTIFACTS
+		Alpha::alpha
+		Python3::Interpreter
+	RUNTIME_DEPENDENCY_SET
+		my_app_deps
+)
 
-# get_target_property(alpha_libs Alpha::alpha LINK_LIBRARIES) # Field not populated
-
-# Only callable for targets built by this project
-
-# install(RUNTIME_DEPENDENCY_SET my_app_deps
-# 	PRE_EXCLUDE_REGEXES
-# 		[=[api-ms-]=]
-# 		[=[ext-ms-]=]
-# 		[[kernel32\.dll]]
-# 		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
-# 	POST_EXCLUDE_REGEXES
-# 		[=[.*system32\/.*\.dll]=]
-# 		[=[^\/(lib|usr\/lib|usr\/local\/lib\/lib64)]=]
-# 	DIRECTORIES
-# 		${CONAN_RUNTIME_LIB_DIRS}
-# )
-
-install(PROGRAMS ${alpha_exe} DESTINATION bin)
-
-# foreach(lib ${alpha_libs})
-#   get_target_property(lib_path ${lib} LOCATION)
-#   if(lib_path)
-#     install(FILES ${lib_path} DESTINATION lib)
-#   endif()
-# endforeach()
+install(RUNTIME_DEPENDENCY_SET my_app_deps
+	PRE_EXCLUDE_REGEXES
+		[=[api-ms-]=]
+		[=[ext-ms-]=]
+		[[kernel32\.dll]]
+		[[libc\.so\..*]] [[libgcc_s\.so\..*]] [[libm\.so\..*]] [[libstdc\+\+\.so\..*]]
+	POST_EXCLUDE_REGEXES
+		[=[.*system32\/.*\.dll]=]
+		# [=[^\/(lib|usr\/lib|usr\/local\/lib\/lib64)]=]
+	DIRECTORIES
+		${CONAN_RUNTIME_LIB_DIRS}
+)
