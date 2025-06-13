@@ -23,8 +23,6 @@ get_target_property(alpha_exe Alpha::alpha LOCATION) # IMPORTED_LOCATION is usua
 
 # get_target_property(alpha_libs Alpha::alpha LINK_LIBRARIES) # Field not populated
 
-print_target_properties(Alpha::alpha)
-
 # Only callable for targets built by this project
 
 # install(RUNTIME_DEPENDENCY_SET my_app_deps
