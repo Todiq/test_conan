@@ -2,10 +2,10 @@ import os
 
 from conan import ConanFile
 from collections import namedtuple
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeConfigDeps, cmake_layout
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, collect_libs
 
-required_conan_version = ">=2.17.0"
+required_conan_version = ">=2.20.1"
 
 class Pkg(ConanFile):
 	name = "test_beta"
@@ -39,7 +39,7 @@ class Pkg(ConanFile):
 	def generate(self):
 		ct = CMakeToolchain(self)
 		ct.generate()
-		cd = CMakeConfigDeps(self)
+		cd = CMakeDeps(self)
 		cd.generate()
 
 	def build(self):

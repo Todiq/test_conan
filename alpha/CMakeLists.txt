@@ -41,3 +41,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 install(TARGETS ${PROJECT_NAME})
+
+install(FILES "test.txt"
+		TYPE DATA
+)
