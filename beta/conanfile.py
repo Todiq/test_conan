@@ -5,33 +5,31 @@ from collections import namedtuple
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, collect_libs
 
-required_conan_version = ">=2.20.1"
-
 class Pkg(ConanFile):
 	name = "test_beta"
 	version = "1.0"
-
-	# Binary configuration
 	settings = "os", "compiler", "build_type", "arch"
 	implements = ["auto_shared_fpic"]
-	options = { "shared": [True, False], "fPIC": [True, False] }
-	default_options = { "shared": True, "fPIC": False }
+	package_type = "library"
+	options = {
+		"shared": [True, False],
+		"fPIC": [True, False]
+	}
+	default_options = {
+		"shared": False,
+		"fPIC": True
+	}
 
 	def export_sources(self):
-		copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
-		copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
+		# copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
+		# copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
+	def build_requirements(self):
+		self.tool_requires("test_alpha/[>=1.0 <2.0]")
+
 	def requirements(self):
-		self.requires("test_alpha/1.0")
-
-	def config_options(self):
-		if self.settings.get_safe("os") == "Windows":
-			self.options.rm_safe("fPIC")
-
-	def configure(self):
-		if self.options.get_safe("shared") is True:
-			self.options.rm_safe("fPIC")
+		self.requires("zlib/[>=1.0 <2.0]", transitive_headers=True)
 
 	def layout(self):
 		cmake_layout(self)
@@ -43,6 +41,8 @@ class Pkg(ConanFile):
 		cd.generate()
 
 	def build(self):
+		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
+		self.run(f"alpha{ext}")
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()

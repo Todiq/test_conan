@@ -1,0 +1,15 @@
+# Common settings for build & host profiles
+
+# Necessary for castmessageresourcesgenerator
+# Otherwise it recompiles its full dep tree in static (boost, core, etc.)
+[options]
+*:shared=True
+gtest/*:shared=False
+
+[conf]
+# If we want to compile with an older compiler toolset an a newer VS
+# We need to indicate the VS we want to use
+{% if detect_api.detect_os() == "Windows" %}
+	{% set compiler, version, compiler_exe = detect_api.detect_msvc_compiler() %}
+	tools.microsoft.msbuild:vs_version={{detect_api.default_msvc_ide_version(version)}}
+{% endif %}

@@ -1,0 +1,17 @@
+# Common options for host profiles
+
+[settings]
+build_type=Release
+tests*/*:compiler.cppstd=17
+
+[conf]
+tools.cmake.cmakedeps:new=will_break_next
+tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+tools.build:install_strip=True
+tools.build:skip_test=True
+test*/*:tools.build:skip_test=False
+user.tools.build:run_tests=False
+
+[tool_requires]
+ninja/1.13.2
+cmake/4.2.1

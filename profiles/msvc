@@ -1,26 +1,13 @@
-{% set os = detect_api.detect_os() %}
-{% if os == "Windows" %}
-{% set compiler, version, compiler_exe = detect_api.detect_msvc_compiler() %}
-{% else %}
-{% set compiler = "msvc" %}
-{% set version = "194" %}
-{% endif %}
+# Build profile for msvc
+
+include(.common)
 
 [settings]
 arch={{detect_api.detect_arch()}}
 build_type=Release
-compiler={{compiler}}
-compiler.cppstd=14
+compiler=msvc
+compiler.cppstd=17
 compiler.runtime=dynamic
-compiler.version={{version}}
+compiler.runtime_type=Release
+compiler.version=194
 os=Windows
-
-test*/*:compiler.cppstd=17
-
-[conf]
-{% if os == "Windows" %}
-	test*/*:tools.env.virtualenv:powershell=True
-{% endif %}
-test*/*:tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
-test*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler"]
-tools.cmake.cmakedeps:new=will_break_next

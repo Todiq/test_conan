@@ -11,15 +11,8 @@ set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
-set(CMAKE_INSTALL_BINDIR .)
 
-add_compile_options(
-	"$<$<CXX_COMPILER_ID:MSVC>:/W4;/D_AFXDLL;/D_SBCS;/D_WIN32_WINNT=0x0A00>"
-)
-
-find_package(ZLIB QUIET)
-
-# Library
+find_package(ZLIB CONFIG REQUIRED QUIET)
 
 add_executable(${PROJECT_NAME})
 
@@ -41,7 +34,3 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 install(TARGETS ${PROJECT_NAME})
-
-install(FILES "test.txt"
-		TYPE DATA
-)

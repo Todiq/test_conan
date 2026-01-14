@@ -1,0 +1,19 @@
+include(.common)
+include(.clang)
+include(.default_host)
+
+{% set os, arch, compiler = profile_name.split('-') %}
+
+[settings]
+arch={{ arch }}
+build_type=Release
+os={{ os }}
+compiler.cppstd=17
+compiler.libcxx=libstdc++11
+
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+# AIP docker image sets LD_LIBRARY_PATH (which should be dropped)
+# Hence, we have to user RPATH over RUNPATH, otherwise it is overriden by LD_LIBRARY_PATH
+test*/*:tools.build:exelinkflags+=["-Wl,--disable-new-dtags"]
+test*/*:tools.build:sharedlinkflags+=["-Wl,--disable-new-dtags"]

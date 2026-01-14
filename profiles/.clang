@@ -1,0 +1,14 @@
+# Common options to clang build & host profiles
+
+{% set compiler, version, compiler_exe = detect_api.detect_clang_compiler(compiler_exe="clang") %}
+{% set version = detect_api.default_compiler_version(compiler, version) %}
+
+[settings]
+compiler={{compiler}}
+compiler.version={{ version }}
+
+[conf]
+tools.build:compiler_executables = {"c": "clang", "cpp": "clang++", "rc": "llvm-rc"}
+tools.build:cxxflags=["-fansi-escape-codes", "-fcolor-diagnostics"]
+tools.build:exelinkflags=["-fuse-ld=lld"]
+tools.build:sharedlinkflags=["-fuse-ld=lld"]

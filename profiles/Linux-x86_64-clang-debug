@@ -1,0 +1,9 @@
+{% set os, arch, compiler, _ = profile_name.split('-') %}
+
+include({{os}}-{{arch}}-{{compiler}})
+
+[settings]
+test*/*:build_type=Debug
+
+[conf]
+test*/*:tools.build:cxxflags+=["-fstandalone-debug"]

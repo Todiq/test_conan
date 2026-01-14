@@ -1,0 +1,19 @@
+include(.common)
+include(.default_host)
+
+{% set os, arch, compiler, compiler_version = profile_name.split('-') %}
+
+[settings]
+arch={{ arch }}
+build_type=Release
+compiler={{ compiler }}
+compiler.cppstd=17
+compiler.runtime=dynamic
+compiler.runtime_type=Release
+compiler.version={{ compiler_version }}
+os={{ os }}
+
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
+test*/*:tools.build:cxxflags=["/W4", "/wd4251", "/wd4267", "/wd4275", "/wd4996", "/bigobj", "/D_CRT_SECURE_NO_WARNINGS", "/D_AFXDLL", "/D_SBCS", "/D_WIN32_WINNT=0x0A00", "/D_HAS_AUTO_PTR_ETC=1"]
+test*/*:tools.build:exelinkflags=["/STACK:33554432"]
