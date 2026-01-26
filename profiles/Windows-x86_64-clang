@@ -1,0 +1,32 @@
+include(./.clang)
+include(./.common)
+include(./.default_host)
+
+{% set os, arch, compiler = profile_name.split('-') %}
+
+[settings]
+arch={{arch}}
+build_type=Release
+compiler.cppstd=17
+compiler.runtime_version=v145
+compiler.runtime=dynamic
+compiler.runtime_type=Release
+os={{os}}
+
+[conf]
+tools.build:compiler_executables = {"c": "clang-cl", "cpp": "clang-cl", "rc": "llvm-rc"}
+test*/*:tools.build:cxxflags+=["/W4", "/D_CRT_SECURE_NO_WARNINGS", "/D_AFXDLL", "/D_SBCS", "/D_WIN32_WINNT=0x0A00", "/D_HAS_AUTO_PTR_ETC=1"]
+# Broken for some reason:
+tools.cmake.cmaketoolchain:generator=Ninja Multi-Config
+
+{% if detect_api.detect_os() == "Windows" %}
+	# boost build system (b2) cannot find clang-cl if the full path is not specified, even if set in [buildenv]
+	tools.build:compiler_executables = {"c": "C:/Program Files/LLVM/bin/clang-cl.exe", "cpp": "C:/Program Files/LLVM/bin/clang-cl.exe", "rc": "C:/Program Files/LLVM/bin/llvm-rc.exe"}
+	[buildenv]
+	PATH=+(path)C:/Program Files/LLVM/bin
+{% else %}
+	tools.build.cross_building:cross_build=True
+	tools.build:cxxflags+=["/winsysroot /opt/winsdk"]
+	tools.build:exelinkflags+=["/winsysroot:/opt/winsdk"]
+	tools.build:sharedlinkflags+=["/winsysroot:/opt/winsdk"]
+{% endif %}

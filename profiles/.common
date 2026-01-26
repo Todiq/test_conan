@@ -4,9 +4,14 @@
 # Otherwise it recompiles its full dep tree in static (boost, core, etc.)
 [options]
 *:shared=True
+castbasetest/*:shared=False
 gtest/*:shared=False
 
 [conf]
+tools.cmake.cmakedeps:new=will_break_next
+test*/*:tools.cmake.cmake_layout:build_folder_vars = ["settings.os", "settings.compiler", "settings.compiler.version", "settings.arch"]
+tools.build:skip_test=True
+&:tools.build:skip_test=False
 # If we want to compile with an older compiler toolset an a newer VS
 # We need to indicate the VS we want to use
 {% if detect_api.detect_os() == "Windows" %}

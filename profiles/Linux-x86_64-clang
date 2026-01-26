@@ -1,6 +1,6 @@
-include(.common)
-include(.clang)
-include(.default_host)
+include(./.common)
+include(./.clang)
+include(./.default_host)
 
 {% set os, arch, compiler = profile_name.split('-') %}
 

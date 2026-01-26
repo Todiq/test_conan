@@ -4,6 +4,9 @@ include(./{{os}}-{{arch}}-{{compiler}})
 
 [settings]
 test*/*:build_type=Debug
+# We keep the runtime_type in Release, otherwise degugging is too slow.
+# However, some functionalities are lost
+compiler.runtime_type=Release
 
 [conf]
 test*/*:tools.build:cxxflags+=["-fstandalone-debug"]
