@@ -3,7 +3,12 @@
 #include <string.h>  // for strlen
 #include <assert.h>
 
+#include <functional>
 
+struct same : std::binary_function<int, int, bool>
+{
+    bool operator()(int a, int b) const { return a == b; }
+};
 // adapted from: http://stackoverflow.com/questions/7540259/deflate-and-inflate-zlib-h-in-c
 int main(int argc, char* argv[])
 {

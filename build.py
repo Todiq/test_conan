@@ -23,9 +23,12 @@ try:
 except FileNotFoundError as e:
     pass
 
-if platform.system() == "Windows":
-    run(f"conan build --profile:build msvc --profile:host Windows-x86_64-msvc-194 alpha --build=missing --remote conancenter")
-    run(f"conan build --profile:build msvc --profile:host Windows-x86_64-msvc-194 beta --no-remote")
-else:
-    run(f"conan build --profile:build clang --profile:host Linux-x86_64-clang alpha --build=missing --remote conancenter")
-    run(f"conan build --profile:build clang --profile:host Linux-x86_64-clang beta --no-remote")
+run(f"conan build --profile:build ./profiles/msvc --profile:host ./profiles/Windows-x86_64-msvc-194 alpha --build=missing --remote conancenter")
+run(f"conan build --profile:build ./profiles/msvc --profile:host ./profiles/Windows-x86_64-msvc-194-debug alpha --build=missing --remote conancenter")
+
+# if platform.system() == "Windows":
+#     run(f"conan build --profile:build ./profiles/msvc --profile:host ./profiles/Windows-x86_64-msvc-194 alpha --build=missing --remote conancenter")
+#     run(f"conan build --profile:build ./profiles/msvc --profile:host ./profiles/Windows-x86_64-msvc-194 beta --no-remote")
+# else:
+#     run(f"conan build --profile:build ./profiles/clang --profile:host ./profiles/Linux-x86_64-clang alpha --build=missing --remote conancenter")
+#     run(f"conan build --profile:build ./profiles/clang --profile:host ./profiles/Linux-x86_64-clang beta --no-remote")
