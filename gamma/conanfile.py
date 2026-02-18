@@ -6,24 +6,21 @@ from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, collect_libs
 
 class Pkg(ConanFile):
-	name = "test_beta"
+	name = "test_gamma"
 	version = "1.0"
 	settings = "os", "compiler", "build_type", "arch"
 	package_type = "application"
 
 	def export_sources(self):
-		copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
+		# copy(self, "src/*", src=self.recipe_folder, dst=self.export_sources_folder)
 		# copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
 	def requirements(self):
-		self.requires("test_alpha/[>=1.0 <2.0]", transitive_headers=True)
+		self.requires("test_beta/[>=1.0 <2.0]")
 
 	def layout(self):
-		bt = "." if self.settings.os != "Windows" else str(self.settings.build_type)
-		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
 		cmake_layout(self)
-		self.cpp.build.location = os.path.join(self.folders.build, bt, f"beta{ext}")
 
 	def generate(self):
 		ct = CMakeToolchain(self)
@@ -39,10 +36,3 @@ class Pkg(ConanFile):
 	def package(self):
 		cmake = CMake(self)
 		cmake.install()
-
-
-	def package_info(self):
-		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
-		self.cpp_info.set_property("cmake_target_name", f"Beta::beta")
-		self.cpp_info.exe = "beta"
-		self.cpp_info.location = os.path.join("bin", f"beta{ext}")

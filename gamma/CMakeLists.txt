@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(beta LANGUAGES CXX)
+project(gamma LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
@@ -13,29 +13,7 @@ set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 set(CMAKE_INSTALL_BINDIR .)
 
-find_package(test_alpha REQUIRED)
-
-add_executable(${PROJECT_NAME})
-
-target_sources(${PROJECT_NAME}
-	PRIVATE
-		src/beta.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}
-	PRIVATE
-		Alpha::alpha
-)
-
-install(
-	IMPORTED_RUNTIME_ARTIFACTS
-		Alpha::alpha
-	RUNTIME_DEPENDENCY_SET
-		my_app_deps
-	DESTINATION .
-)
-
-install(TARGETS ${PROJECT_NAME})
+find_package(test_beta REQUIRED)
 
 install(RUNTIME_DEPENDENCY_SET my_app_deps
 	DESTINATION .
@@ -50,4 +28,12 @@ install(RUNTIME_DEPENDENCY_SET my_app_deps
 		[=[^\/(lib*|usr\/lib*|usr\/local\/lib*\/lib64)]=] # Unix system libraries
 	DIRECTORIES
 		${CONAN_RUNTIME_LIB_DIRS}
+)
+
+install(
+	IMPORTED_RUNTIME_ARTIFACTS
+		Beta::beta
+	RUNTIME_DEPENDENCY_SET
+		my_app_deps
+	DESTINATION .
 )
