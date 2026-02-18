@@ -1,13 +1,7 @@
 #include <alpha/alpha.hpp>
+#include <iostream>
 
-#include <functional>
-
-struct same : std::binary_function<int, int, bool>
+void hello()
 {
-    bool operator()(int a, int b) const { return a == b; }
-};
-
-int main(int argc, char* argv[])
-{
-    return 0;
+    std::cout << "Hello" << std::endl;
 }

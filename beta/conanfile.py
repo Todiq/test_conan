@@ -25,11 +25,8 @@ class Pkg(ConanFile):
 		# copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
-	def build_requirements(self):
-		self.tool_requires("test_alpha/[>=1.0 <2.0]")
-
 	def requirements(self):
-		self.requires("zlib/[>=1.0 <2.0]", transitive_headers=True)
+		self.requires("test_alpha/[>=1.0 <2.0]", transitive_headers=True)
 
 	def layout(self):
 		cmake_layout(self)
@@ -41,8 +38,6 @@ class Pkg(ConanFile):
 		cd.generate()
 
 	def build(self):
-		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
-		self.run(f"alpha{ext}")
 		cmake = CMake(self)
 		cmake.configure()
 		cmake.build()

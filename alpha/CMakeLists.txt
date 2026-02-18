@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(alpha LANGUAGES CXX)
+project(alpha LANGUAGES CXX VERSION ${PROJECT_VERSION})
 
 include(GNUInstallDirs)
 
@@ -12,9 +12,13 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
-find_package(ZLIB CONFIG REQUIRED QUIET)
+add_library(${PROJECT_NAME})
 
-add_executable(${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES
+		VERSION ${PROJECT_VERSION}
+		SOVERSION ${PROJECT_VERSION_MAJOR}
+)
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
@@ -26,11 +30,6 @@ target_include_directories(${PROJECT_NAME}
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-target_link_libraries(${PROJECT_NAME}
-	PUBLIC
-		ZLIB::ZLIB
 )
 
 install(TARGETS ${PROJECT_NAME})

@@ -9,7 +9,18 @@ class Pkg(ConanFile):
 	version = "1.0"
 
 	settings = "os", "compiler", "build_type", "arch"
-	package_type = "application"
+	package_type = "shared-library"
+	implements = ["auto_shared_fpic"]
+
+	# Binary configuration
+	options = {
+		"shared": [True, False],
+		"fPIC": [True, False]
+	}
+	default_options = {
+		"shared": False,
+		"fPIC": True
+	}
 
 
 	def export_sources(self):
@@ -17,19 +28,12 @@ class Pkg(ConanFile):
 		copy(self, "include/*", src=self.recipe_folder, dst=self.export_sources_folder)
 		copy(self, "CMakeLists.txt", src=self.recipe_folder, dst=self.export_sources_folder)
 
-	def requirements(self):
-		self.requires("zlib/[>=1.0 <2.0]")
-
 	def layout(self):
 		cmake_layout(self)
-		bt = "." if self.settings.get_safe("os") != "Windows" else str(self.settings.build_type)
-		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
-
-		self.cpp.build.bindirs = [bt]
-		self.cpp.build.location = os.path.join(self.folders.build, bt, f"alpha{ext}")
 
 	def generate(self):
 		tc = CMakeToolchain(self)
+		tc.cache_variables["PROJECT_VERSION"] = self.version
 		tc.generate()
 		d = CMakeDeps(self)
 		d.generate()
@@ -44,9 +48,5 @@ class Pkg(ConanFile):
 		cmake.install()
 
 	def package_info(self):
-		ext = "" if self.settings.get_safe("os") != "Windows" else ".exe"
-
+		self.cpp_info.libs = ["alpha"]
 		self.cpp_info.set_property("cmake_target_name", "Alpha::alpha")
-		self.cpp_info.requires = ["zlib::zlib"]
-		self.cpp_info.exe = "alpha"
-		self.cpp_info.location = os.path.join("bin", f"alpha{ext}")
